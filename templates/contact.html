@@ -1,0 +1,299 @@
+{% extends "base.html" %}
+
+{% block title %}Contact — La Relève | DISE ENSEA 2026{% endblock %}
+{% block meta_desc %}Contactez La Relève, liste candidate à l'élection DISE 2026-2027. Une question, une suggestion, un message d'encouragement ? Nous sommes à l'écoute.{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-carousel-bg">
+    <div class="hero-carousel-bg-base" style="background-image:url('{{ url_for('static', filename='images/bg_img.webp') }}')"></div>
+    <div class="carousel-slide active" style="background-image:url('{{ url_for('static', filename='images/equipe_complet.jpg') }}')"></div>
+    <div class="carousel-slide" style="background-image:url('{{ url_for('static', filename='images/photo_remerciement.jpg') }}')"></div>
+  </div>
+
+  <div class="page-aurora">
+    <div class="aurora-1"></div>
+    <div class="aurora-2"></div>
+  </div>
+  <div class="container">
+    <div class="page-hero-inner" data-aos="fade-up">
+      <span class="section-eyebrow">Nous écrire</span>
+      <h1 class="page-title">Entrer en <span class="gold">contact</span></h1>
+      <p class="page-subtitle">Une question, une idée, un message d'encouragement ? La Relève vous écoute. Chaque message compte.</p>
+    </div>
+  </div>
+  <div class="page-hero-line"></div>
+</section>
+
+<!-- CONTACT SECTION -->
+<section class="section-contact">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- INFOS CONTACT -->
+      <div class="contact-info" data-aos="fade-right">
+        <h2>Parlons-nous</h2>
+        <p class="contact-intro">Nous sommes disponibles pour répondre à toutes vos questions sur notre programme, notre équipe ou notre vision pour la DISE 2026-2027.</p>
+
+        <div class="contact-cards">
+          <div class="ci-card">
+            <div class="ci-icon"><i data-lucide="phone"></i></div>
+            <div>
+              <h4>Président</h4>
+              <p>ASSOUMOU Raoul Martial</p>
+              <a href="tel:+2250769954632">+225 07 69 95 46 32</a>
+            </div>
+          </div>
+          <div class="ci-card">
+            <div class="ci-icon"><i data-lucide="smartphone"></i></div>
+            <div>
+              <h4>Vice-Président</h4>
+              <p>BIYEN Abdoul Fadoul</p>
+              <a href="tel:+2250151675457">+225 01 51 67 54 57</a>
+            </div>
+          </div>
+          <div class="ci-card">
+            <div class="ci-icon"><i data-lucide="mail"></i></div>
+            <div>
+              <h4>Email officiel</h4>
+              <a href="mailto:fadoul.biyen@ensea.edu.ci">fadoul.biyen@ensea.edu.ci</a>
+            </div>
+          </div>
+          <div class="ci-card">
+            <div class="ci-icon"><i data-lucide="map-pin"></i></div>
+            <div>
+              <h4>ENSEA</h4>
+              <p>Abidjan, Côte d'Ivoire</p>
+              <span class="ci-sub">École Nationale Supérieure de Statistique et d'Économie Appliquée</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-team-pills">
+          <span class="section-eyebrow" style="display:block; margin-bottom: 1rem;">Notre équipe</span>
+          <div class="team-pills">
+            <span class="team-pill"><img src="https://flagcdn.com/ci.svg" width="20" height="15" alt="CI" style="border-radius:2px;vertical-align:middle;margin-right:5px"> Raoul Martial — Président</span>
+            <span class="team-pill"><img src="https://flagcdn.com/bf.svg" width="20" height="15" alt="BF" style="border-radius:2px;vertical-align:middle;margin-right:5px"> Abdoul Fadoul — VP</span>
+            <span class="team-pill"><img src="https://flagcdn.com/cm.svg" width="20" height="15" alt="CM" style="border-radius:2px;vertical-align:middle;margin-right:5px"> Jorex Ivan — SG</span>
+            <span class="team-pill"><img src="https://flagcdn.com/ci.svg" width="20" height="15" alt="CI" style="border-radius:2px;vertical-align:middle;margin-right:5px"> Richard — SG Adj.</span>
+            <span class="team-pill"><img src="https://flagcdn.com/ci.svg" width="20" height="15" alt="CI" style="border-radius:2px;vertical-align:middle;margin-right:5px"> Anne Océane — Trésorière</span>
+            <span class="team-pill"><img src="https://flagcdn.com/ci.svg" width="20" height="15" alt="CI" style="border-radius:2px;vertical-align:middle;margin-right:5px"> Sephora — Trés. Adj.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORMULAIRE -->
+      <div class="contact-form-wrap" data-aos="fade-left" data-aos-delay="100">
+        <div class="contact-form-card">
+          <div class="cfc-glow"></div>
+          <div class="cfc-header">
+            <h3>Envoyer un message</h3>
+            <p>Nous répondons dans les 24h.</p>
+          </div>
+
+          <!-- Success / Error messages -->
+          <div id="formSuccess" class="form-alert form-alert--success" style="display:none;" role="alert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            <p id="formSuccessMsg">Votre message a été envoyé avec succès !</p>
+          </div>
+          <div id="formError" class="form-alert form-alert--error" style="display:none;" role="alert">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            <p id="formErrorMsg">Une erreur s'est produite.</p>
+          </div>
+
+          <form id="contactForm" class="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="nom" class="form-label">Nom complet <span class="form-required">*</span></label>
+                <div class="form-input-wrap">
+                  <input type="text" id="nom" name="nom" class="form-input" placeholder="Votre nom complet" autocomplete="name" required minlength="2" />
+                  <div class="form-input-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                  </div>
+                </div>
+                <span class="form-error" id="nomError" role="alert"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="form-label">Email <span class="form-required">*</span></label>
+                <div class="form-input-wrap">
+                  <input type="email" id="email" name="email" class="form-input" placeholder="votre@email.com" autocomplete="email" required />
+                  <div class="form-input-icon">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  </div>
+                </div>
+                <span class="form-error" id="emailError" role="alert"></span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="telephone" class="form-label">Téléphone <span class="form-optional">(optionnel)</span></label>
+              <div class="form-input-wrap">
+                <input type="tel" id="telephone" name="telephone" class="form-input" placeholder="+225 00 00 00 00 00" autocomplete="tel" />
+                <div class="form-input-icon">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 01.01 1.22 2 2 0 012 0h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L6.09 7.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="message" class="form-label">Message <span class="form-required">*</span></label>
+              <div class="form-input-wrap form-textarea-wrap">
+                <textarea id="message" name="message" class="form-input form-textarea" placeholder="Votre message, question ou suggestion..." rows="5" required minlength="10"></textarea>
+              </div>
+              <div class="form-char-count">
+                <span id="charCount">0</span> / 500 caractères
+              </div>
+              <span class="form-error" id="messageError" role="alert"></span>
+            </div>
+
+            <button type="submit" class="btn-primary form-submit" id="submitBtn">
+              <span id="submitText">Envoyer le message</span>
+              <svg id="submitArrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <svg id="submitLoader" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none; animation: spin 1s linear infinite;">
+                <circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 010 20"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CANDIDATS CTA -->
+<section class="section-vote-cta" data-aos="fade-up">
+  <div class="container">
+    <div class="vote-cta-inner">
+      <span class="section-eyebrow">DISE ENSEA 2026</span>
+      <h2>Votez <span class="gold">La Relève</span></h2>
+      <p>Héritiers d'exigence, bâtisseurs d'avenir.</p>
+      <div class="vote-actions">
+        <a href="{{ url_for('programme') }}" class="btn-primary">Notre programme</a>
+        <a href="{{ url_for('equipe') }}" class="btn-ghost">Notre équipe</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const form = document.getElementById('contactForm');
+const submitBtn = document.getElementById('submitBtn');
+const submitText = document.getElementById('submitText');
+const submitArrow = document.getElementById('submitArrow');
+const submitLoader = document.getElementById('submitLoader');
+const formSuccess = document.getElementById('formSuccess');
+const formError = document.getElementById('formError');
+const formSuccessMsg = document.getElementById('formSuccessMsg');
+const formErrorMsg = document.getElementById('formErrorMsg');
+const charCount = document.getElementById('charCount');
+
+// Char counter
+document.getElementById('message').addEventListener('input', function() {
+  charCount.textContent = this.value.length;
+});
+
+// Real-time validation
+function validateField(field, errorEl, rules) {
+  const val = field.value.trim();
+  let error = '';
+  for (const rule of rules) {
+    const result = rule(val);
+    if (result) { error = result; break; }
+  }
+  if (error) {
+    field.classList.add('form-input--error');
+    field.classList.remove('form-input--valid');
+    errorEl.textContent = error;
+  } else {
+    field.classList.remove('form-input--error');
+    if (val) field.classList.add('form-input--valid');
+    errorEl.textContent = '';
+  }
+  return !error;
+}
+
+const rules = {
+  nom: [v => !v ? 'Le nom est requis.' : v.length < 2 ? 'Au moins 2 caractères.' : ''],
+  email: [v => !v ? "L'email est requis." : !/^[^@]+@[^@]+\.[^@]+$/.test(v) ? 'Email invalide.' : ''],
+  message: [v => !v ? 'Le message est requis.' : v.length < 10 ? 'Au moins 10 caractères.' : '']
+};
+
+document.getElementById('nom').addEventListener('blur', function() {
+  validateField(this, document.getElementById('nomError'), rules.nom);
+});
+document.getElementById('email').addEventListener('blur', function() {
+  validateField(this, document.getElementById('emailError'), rules.email);
+});
+document.getElementById('message').addEventListener('blur', function() {
+  validateField(this, document.getElementById('messageError'), rules.message);
+});
+
+// Submit
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const nomOk = validateField(document.getElementById('nom'), document.getElementById('nomError'), rules.nom);
+  const emailOk = validateField(document.getElementById('email'), document.getElementById('emailError'), rules.email);
+  const msgOk = validateField(document.getElementById('message'), document.getElementById('messageError'), rules.message);
+
+  if (!nomOk || !emailOk || !msgOk) return;
+
+  // Loading state
+  submitText.textContent = 'Envoi en cours...';
+  submitArrow.style.display = 'none';
+  submitLoader.style.display = 'inline';
+  submitBtn.disabled = true;
+
+  formSuccess.style.display = 'none';
+  formError.style.display = 'none';
+
+  try {
+    const payload = {
+      nom: document.getElementById('nom').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      telephone: document.getElementById('telephone').value.trim(),
+      message: document.getElementById('message').value.trim()
+    };
+
+    const res = await fetch('/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+
+    if (data.success) {
+      formSuccess.style.display = 'flex';
+      formSuccessMsg.textContent = data.message || 'Message envoyé avec succès !';
+      form.reset();
+      document.querySelectorAll('.form-input--valid').forEach(el => el.classList.remove('form-input--valid'));
+      charCount.textContent = '0';
+      formSuccess.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    } else {
+      const errors = data.errors || ['Une erreur s\'est produite.'];
+      formErrorMsg.textContent = errors[0];
+      formError.style.display = 'flex';
+    }
+  } catch (err) {
+    formErrorMsg.textContent = 'Erreur de connexion. Vérifiez votre réseau et réessayez.';
+    formError.style.display = 'flex';
+  } finally {
+    submitText.textContent = 'Envoyer le message';
+    submitArrow.style.display = 'inline';
+    submitLoader.style.display = 'none';
+    submitBtn.disabled = false;
+  }
+});
+
+// Spin keyframe
+const style = document.createElement('style');
+style.textContent = '@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }';
+document.head.appendChild(style);
+</script>
+{% endblock %}
