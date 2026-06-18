@@ -18,10 +18,10 @@ function lerp(a, b, t) { return a + (b - a) * t; }
   const loader   = $('#loader');
   if (!loader) return;
 
-  const bar      = $('#loader-bar');
-  const percent  = $('#loader-percent');
-  const logo     = $('#loader-logo');
-  const title    = $('#loader-title');
+  const bar      = $('.loader-bar');
+  const percent  = $('.loader-percent');
+  const logo     = $('.loader-logo');
+  const title    = $('.loader-title');
 
   let prog = 0;
   const TARGET = 100;
@@ -99,14 +99,14 @@ function triggerHeroAnimation() {
 
   // "LA"
   tl.fromTo('.hero-la',
-    { opacity: 0, x: -60, skewX: -6 },
-    { opacity: 1, x: 0, skewX: 0, duration: 0.8 }, 0.15
+    { opacity: 0, x: -60, y: 0, skewX: -6 },
+    { opacity: 1, x: 0, y: 0, skewX: 0, duration: 0.8 }, 0.15
   );
 
   // "RELÈVE"
   tl.fromTo('.hero-releve',
-    { opacity: 0, x: 60, skewX: 6 },
-    { opacity: 1, x: 0, skewX: 0, duration: 0.8 }, 0.15
+    { opacity: 0, x: 60, y: 0, skewX: 6 },
+    { opacity: 1, x: 0, y: 0, skewX: 0, duration: 0.8 }, 0.15
   );
 
   // Slogan
