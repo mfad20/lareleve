@@ -543,6 +543,7 @@ section { position: relative; z-index: 1; }
   padding: calc(var(--nav-h) + 4rem) 0 6rem;
   position: relative;
   overflow: hidden;
+  text-align: center;
 }
 
 .hero-grid-overlay {
@@ -603,6 +604,7 @@ section { position: relative; z-index: 1; }
   color: rgba(248,249,252,0.9);
   letter-spacing: 0.3em;
   opacity: 0;
+ 
   text-shadow: 0 3px 20px rgba(0,0,0,0.95), 0 1px 6px rgba(0,0,0,0.85);
 }
 
