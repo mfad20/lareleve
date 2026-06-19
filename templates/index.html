@@ -59,11 +59,6 @@
       </div>
       <div class="hero-meta-divider"></div>
       <div class="hero-meta-item">
-        <span class="hero-meta-num">3</span>
-        <span class="hero-meta-label">Nationalités</span>
-      </div>
-      <div class="hero-meta-divider"></div>
-      <div class="hero-meta-item">
         <span class="hero-meta-num">5</span>
         <span class="hero-meta-label">Innovations</span>
       </div>
@@ -273,7 +268,7 @@
     <div class="section-header" data-aos="fade-up">
       <span class="section-eyebrow">Notre Équipe</span>
       <h2 class="section-title">6 bâtisseurs <span class="gold">engagés</span></h2>
-      <p class="section-sub">Une liste panafricaine unie par l'ambition de faire rayonner la DISE.</p>
+      <p class="section-sub">Une liste unie par l'ambition de faire rayonner la DISE.</p>
     </div>
 
     <div class="team-preview-grid">
@@ -283,7 +278,6 @@
         <div class="tcp-photo-wrap" style="border-color: {{ membre.couleur }}60;">
           <img src="{{ url_for('static', filename='images/' + membre.photo) }}" alt="{{ membre.prenom }}" />
         </div>
-        <div class="tcp-flag">{{ membre.drapeau | safe }}</div>
         <h3>{{ membre.prenom }}</h3>
         <p class="tcp-nom">{{ membre.nom.split(' ')[0] }}</p>
         <span class="tcp-poste" style="color: {{ membre.couleur }};">{{ membre.poste }}</span>

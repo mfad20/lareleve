@@ -22,7 +22,7 @@
     <div class="page-hero-inner" data-aos="fade-up">
       <span class="section-eyebrow">Notre Équipe</span>
       <h1 class="page-title">Six leaders, <span class="gold">une vision</span></h1>
-      <p class="page-subtitle">Trois nationalités, deux niveaux, un seul objectif : faire rayonner la DISE comme jamais auparavant.</p>
+      <p class="page-subtitle">Deux niveaux, un seul objectif : faire rayonner la DISE comme jamais auparavant.</p>
     </div>
   </div>
   <div class="page-hero-line"></div>
@@ -35,10 +35,6 @@
       <div class="team-stat-card" data-aos="fade-up" data-aos-delay="60">
         <span class="tsc-num">6</span>
         <span class="tsc-label">Membres déterminés</span>
-      </div>
-      <div class="team-stat-card" data-aos="fade-up" data-aos-delay="120">
-        <span class="tsc-num">3</span>
-        <span class="tsc-label">Nationalités</span>
       </div>
       <div class="team-stat-card" data-aos="fade-up" data-aos-delay="180">
         <span class="tsc-num">2</span>
@@ -72,12 +68,11 @@
           <div class="mf-photo-wrap" style="border-color: rgba(212,175,55,0.4);">
             <img src="{{ url_for('static', filename='images/president.jpg') }}" alt="ASSOUMOU Raoul Martial" />
           </div>
-          <span class="mf-flag"><img src="https://flagcdn.com/ci.svg" width="36" height="27" alt="Côte d'Ivoire" style="border-radius:4px"></span>
           <span class="mf-badge mf-badge--president">Président</span>
         </div>
         <div class="mf-right">
           <h2 class="mf-nom">ASSOUMOU <span class="gold">Raoul Martial</span></h2>
-          <span class="mf-niveau">ISE2 · Ivoirien · ENSEA Abidjan</span>
+          <span class="mf-niveau">ISE2 · ENSEA Abidjan</span>
           <p class="mf-description">Leader naturel et bâtisseur de ponts, Raoul Martial porte la vision d'une DISE unie et ambitieuse. Sa double expertise en vie associative et management en fait le pilier de la liste.</p>
           <div class="mf-experiences">
             <h4>Expériences associatives</h4>
@@ -112,7 +107,7 @@
         <div class="mf-glow"></div>
         <div class="mf-right">
           <h2 class="mf-nom">BIYEN <span class="electric">Abdoul Fadoul</span></h2>
-          <span class="mf-niveau">ISE2 · Burkinabè · ENSEA Abidjan</span>
+          <span class="mf-niveau">ISE2 · ENSEA Abidjan</span>
           <p class="mf-description">Stratège en communication et marketing, Abdoul Fadoul apporte une expertise panafricaine et une vision moderne de la communication institutionnelle.</p>
           <div class="mf-experiences">
             <h4>Expériences associatives</h4>
@@ -142,7 +137,6 @@
           <div class="mf-photo-wrap" style="border-color: rgba(59,130,246,0.4);">
             <img src="{{ url_for('static', filename='images/vice_president.jpg') }}" alt="BIYEN Abdoul Fadoul" />
           </div>
-          <span class="mf-flag"><img src="https://flagcdn.com/bf.svg" width="36" height="27" alt="Burkina Faso" style="border-radius:4px"></span>
           <span class="mf-badge" style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:#3B82F6;">Vice-Président</span>
         </div>
       </div>
@@ -168,11 +162,10 @@
           <div class="mc-photo-wrap" style="border-color: {{ m.couleur }}60;">
             <img src="{{ url_for('static', filename='images/' + m.photo) }}" alt="{{ m.prenom }}" />
           </div>
-          <span>{{ m.drapeau | safe }}</span>
         </div>
         <div class="mc-nom">{{ m.nom.split(' ')[0] }} <span style="color:{{ m.couleur }};">{{ m.prenom }}</span></div>
         <span class="mc-poste" style="color: {{ m.couleur }};">{{ m.poste }}</span>
-        <span class="mc-niveau">{{ m.niveau }} · {{ m.nationalite }}</span>
+        <span class="mc-niveau">{{ m.niveau }}</span>
         <p class="mc-desc">{{ m.description }}</p>
         <div class="mc-experiences">
           <h4>Expériences</h4>
