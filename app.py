@@ -68,7 +68,7 @@ MEMBRES = [
             "Vice-Président AICP (2025-2026)",
             "Commission Communication AES (2025-2026)"
         ],
-        "description": "Stratège en communication et marketing, Abdoul Fadoul apporte une expertise panafricaine et une vision moderne de la communication institutionnelle."
+        "description": "Stratège en communication et marketing, Abdoul Fadoul apporte une expertise solide et une vision moderne de la communication institutionnelle."
     },
     {
         "id": 3,
@@ -150,7 +150,7 @@ PROGRAMME = {
         {"titre": "ISEChampionship", "icone": "trophy", "description": "Compétition sportive et intellectuelle phare de la DISE, renforçant la cohésion entre niveaux."},
         {"titre": "RDV des Experts", "icone": "briefcase", "description": "Rencontres régulières avec des professionnels et aînés du monde de la statistique et de l'économie."},
         {"titre": "Dîner Gala", "icone": "sparkles", "description": "Soirée d'excellence célébrant les lauréats et renforçant les liens entre membres de la DISE."},
-        {"titre": "Rencontres Aînés-Cadets", "icone": "handshake", "description": "Panels intergénérationnels avec diversification des nationalités des panélistes."},
+        {"titre": "Rencontres Aînés-Cadets", "icone": "handshake", "description": "Panels intergénérationnels pour renforcer les liens entre anciens et nouveaux membres de la DISE."},
         {"titre": "Marathon des ISE", "icone": "activity", "description": "Événement sportif symbolisant l'endurance et la persévérance des ISE."},
         {"titre": "Vente de Gadgets", "icone": "shirt", "description": "Polos, tee-shirts, casquettes et vêtements aux couleurs de la Céleste Division."}
     ],
@@ -219,7 +219,7 @@ VALEURS = [
     {
         "titre": "Unité",
         "icone": "handshake",
-        "description": "ISE1, ISE2, ISE3 : une seule famille. Nous construisons des ponts entre promotions, nationalités et parcours."
+        "description": "ISE1, ISE2, ISE3 : une seule famille. Nous construisons des ponts entre promotions et parcours."
     },
     {
         "titre": "Innovation",
