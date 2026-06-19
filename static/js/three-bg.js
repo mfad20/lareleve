@@ -36,9 +36,9 @@
     PARTICLE_SIZE: 0.55,
     SPEED: 0.06,
     MOUSE_INFLUENCE: 14,
-    COLOR_PRIMARY: new THREE.Color(0x3b82f6),   // Bleu Électrique
-    COLOR_ACCENT: new THREE.Color(0xd4af37),    // Or Premium
-    COLOR_DIM: new THREE.Color(0x0f3460),       // Bleu Premium
+    COLOR_PRIMARY: new THREE.Color(0x93c5fd),   // Bleu clair
+    COLOR_ACCENT: new THREE.Color(0xfde68a),    // Or clair
+    COLOR_DIM: new THREE.Color(0xc7d2fe),       // Indigo clair
   };
 
   /* ── Mouse ────────────────────────────────────────── */
@@ -91,7 +91,7 @@
     size: CONFIG.PARTICLE_SIZE,
     vertexColors: true,
     transparent: true,
-    opacity: 0.75,
+    opacity: 0.95,
     sizeAttenuation: true,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
@@ -114,7 +114,7 @@
     new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.45,
       blending: THREE.AdditiveBlending,
       depthWrite: false,
     })
@@ -126,9 +126,9 @@
   scene.add(orbGroup);
 
   const orbData = [
-    { color: 0x3b82f6, x: -40, y: 20, z: -30, size: 12, speed: 0.0004 },
-    { color: 0xd4af37, x:  45, y: -18, z: -20, size: 8,  speed: 0.0006 },
-    { color: 0x071a52, x:   5, y:  30, z: -40, size: 16, speed: 0.0003 },
+    { color: 0x93c5fd, x: -40, y: 20, z: -30, size: 12, speed: 0.0004 },
+    { color: 0xfde68a, x:  45, y: -18, z: -20, size: 8,  speed: 0.0006 },
+    { color: 0xc7d2fe, x:   5, y:  30, z: -40, size: 16, speed: 0.0003 },
   ];
 
   orbData.forEach((o) => {
@@ -136,7 +136,7 @@
     const mat  = new THREE.MeshBasicMaterial({
       color: o.color,
       transparent: true,
-      opacity: 0.06,
+      opacity: 0.15,
     });
     const mesh = new THREE.Mesh(geo, mat);
     mesh.position.set(o.x, o.y, o.z);
@@ -174,11 +174,11 @@
           linePositions[base + 4] = positions[j3 + 1];
           linePositions[base + 5] = positions[j3 + 2];
 
-          // Colour — gold near accent particles, blue elsewhere
+          // Colour — gold near accent particles, light blue elsewhere
           const isAccent = colors[i3 + 1] < 0.6 && colors[i3] < 0.3;
-          const r = isAccent ? 0.83 * alpha : 0.23 * alpha;
-          const g = isAccent ? 0.69 * alpha : 0.51 * alpha;
-          const b = isAccent ? 0.22 * alpha : 0.96 * alpha;
+          const r = isAccent ? 0.99 * alpha : 0.58 * alpha;
+          const g = isAccent ? 0.90 * alpha : 0.77 * alpha;
+          const b = isAccent ? 0.54 * alpha : 0.99 * alpha;
 
           lineColors[base]     = r; lineColors[base + 1] = g; lineColors[base + 2] = b;
           lineColors[base + 3] = r; lineColors[base + 4] = g; lineColors[base + 5] = b;
