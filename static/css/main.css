@@ -1327,7 +1327,7 @@ section { position: relative; z-index: 1; }
 .team-stat-card {
   text-align: center;
   padding: 1.5rem;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.18);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-md);
   backdrop-filter: blur(10px);
@@ -1366,7 +1366,7 @@ section { position: relative; z-index: 1; }
   grid-template-columns: 200px 1fr;
   gap: 3rem;
   padding: 3rem;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.18);
   border: 1px solid rgba(212,175,55,0.15);
   border-radius: var(--radius-xl);
   backdrop-filter: blur(20px);
@@ -1516,7 +1516,7 @@ section { position: relative; z-index: 1; }
 .membre-card {
   position: relative;
   padding: 2.5rem 2rem;
-  background: rgba(255,255,255,0.07);
+  background: rgba(255,255,255,0.18);
   border: 1px solid var(--glass-border);
   border-radius: var(--radius-xl);
   backdrop-filter: blur(12px);
