@@ -499,7 +499,7 @@ section { position: relative; z-index: 1; }
   transition: opacity 1.4s ease-in-out;
 }
 
-.carousel-slide.active { opacity: 0.25; }
+.carousel-slide.active { opacity: 0.55; }
 
 .hero-carousel-bg::after {
   content: '';
@@ -507,10 +507,10 @@ section { position: relative; z-index: 1; }
   inset: 0;
   background:
     linear-gradient(to bottom,
-      rgba(240,247,255,0.88) 0%,
-      rgba(240,247,255,0.78) 40%,
-      rgba(240,247,255,0.78) 65%,
-      rgba(240,247,255,0.88) 100%);
+      rgba(240,247,255,0.68) 0%,
+      rgba(240,247,255,0.55) 40%,
+      rgba(240,247,255,0.55) 65%,
+      rgba(240,247,255,0.68) 100%);
   pointer-events: none;
 }
 
