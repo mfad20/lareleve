@@ -480,6 +480,7 @@ section { position: relative; z-index: 1; }
   inset: 0;
   pointer-events: none;
   z-index: 0;
+display: none;
 }
 
 .hero-carousel-bg-base {
@@ -500,7 +501,7 @@ section { position: relative; z-index: 1; }
   transition: opacity 1.4s ease-in-out;
 }
 
-.carousel-slide.active { opacity: 1; }
+.carousel-slide.active { opacity: 0.50; }
 
 .hero-carousel-bg::after {
   content: '';
