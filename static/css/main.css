@@ -2770,19 +2770,29 @@ section { position: relative; z-index: 1; }
   .nav-links, .nav-cta { display: none; }
   .nav-burger { display: flex; }
 
-  /* Ancre le container en haut au lieu de le centrer verticalement,
-     ce qui laisse le titre LA RELÈVE dans la partie haute */
+  /* 1. Le hero s'étire : hero-container prend toute la hauteur disponible */
   .hero {
-    align-items: flex-start;
-    padding: calc(var(--nav-h) + 1.5rem) 0 4rem;
+    align-items: stretch;
+    padding: calc(var(--nav-h) + 1rem) 0 2.5rem;
+  }
+
+  /* 2. hero-container devient flex-column centré horizontalement */
+  .hero-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
   }
 
   .hero-la { font-size: clamp(2.5rem, 10vw, 4rem); }
   .hero-releve { font-size: clamp(3.5rem, 16vw, 7rem); }
 
-  /* Pousse le slogan (et tout ce qui suit) vers le bas
-     pour qu'il commence au niveau du torse sur la photo de groupe */
-  .hero-slogan { margin-top: 11vh; }
+  /* 3. margin-top: auto absorbe tout l'espace entre le titre et le slogan
+     → slogan + paragraphe + badge + actions + meta poussés en bas du hero */
+  .hero-slogan {
+    margin-top: auto;
+    padding-top: 1rem;
+  }
 
   .hero-meta { flex-wrap: wrap; gap: 1rem; }
   .hero-meta-divider { display: none; }
