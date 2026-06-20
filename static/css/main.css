@@ -2770,10 +2770,19 @@ section { position: relative; z-index: 1; }
   .nav-links, .nav-cta { display: none; }
   .nav-burger { display: flex; }
 
-  .hero { padding: calc(var(--nav-h) + 3rem) 0 4rem; }
+  /* Ancre le container en haut au lieu de le centrer verticalement,
+     ce qui laisse le titre LA RELÈVE dans la partie haute */
+  .hero {
+    align-items: flex-start;
+    padding: calc(var(--nav-h) + 1.5rem) 0 4rem;
+  }
 
   .hero-la { font-size: clamp(2.5rem, 10vw, 4rem); }
   .hero-releve { font-size: clamp(3.5rem, 16vw, 7rem); }
+
+  /* Pousse le slogan (et tout ce qui suit) vers le bas
+     pour qu'il commence au niveau du torse sur la photo de groupe */
+  .hero-slogan { margin-top: 11vh; }
 
   .hero-meta { flex-wrap: wrap; gap: 1rem; }
   .hero-meta-divider { display: none; }
