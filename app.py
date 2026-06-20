@@ -8,7 +8,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'lareleve-dise-2026-secret-key-ultra-secure')
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lareleve.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 86400  # 24h cache navigateur
 
 db = SQLAlchemy(app)
 
@@ -342,8 +342,9 @@ def sitemap():
 def init_db():
     with app.app_context():
         db.create_all()
-        print("[OK] Base de données initialisée")
+
+# Initialisation au démarrage (Gunicorn n'exécute pas __main__)
+init_db()
 
 if __name__ == '__main__':
-    init_db()
     app.run(debug=True, host='0.0.0.0', port=5000)

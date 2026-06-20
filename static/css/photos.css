@@ -123,8 +123,8 @@
   height: 32px;
   width: auto;
   object-fit: contain;
-  opacity: 0.6;
-  filter: brightness(0) invert(1);
+  opacity: 0.5;
+  filter: brightness(0);
   transition: opacity 0.3s ease;
 }
 
@@ -150,5 +150,5 @@
 
 .icon-gold { stroke: var(--gold); }
 .icon-blue { stroke: var(--blue-electric); }
-.icon-white { stroke: var(--white); }
-.icon-dim  { stroke: rgba(248,249,252,0.4); }
+.icon-white { stroke: #0f172a; }
+.icon-dim  { stroke: #94a3b8; }
