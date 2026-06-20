@@ -2770,28 +2770,30 @@ section { position: relative; z-index: 1; }
   .nav-links, .nav-cta { display: none; }
   .nav-burger { display: flex; }
 
-  /* 1. Le hero s'étire : hero-container prend toute la hauteur disponible */
+  /* Hero mobile : titre en haut, slogan+paragraphe+badge en bas */
   .hero {
-    align-items: stretch;
+    align-items: center;
     padding: calc(var(--nav-h) + 1rem) 0 2.5rem;
   }
 
-  /* 2. hero-container devient flex-column centré horizontalement */
   .hero-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+    /* min-height explicite = hauteur dispo dans le hero
+       → permet à margin-top:auto de fonctionner sur .hero-slogan */
+    min-height: calc(100vh - var(--nav-h) - 3.5rem);
   }
 
   .hero-la { font-size: clamp(2.5rem, 10vw, 4rem); }
   .hero-releve { font-size: clamp(3.5rem, 16vw, 7rem); }
 
-  /* 3. margin-top: auto absorbe tout l'espace entre le titre et le slogan
-     → slogan + paragraphe + badge + actions + meta poussés en bas du hero */
+  /* margin-top:auto absorbe tout l'espace libre entre le titre et le slogan
+     → slogan + paragraphe + badge + boutons poussés tout en bas */
   .hero-slogan {
     margin-top: auto;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
   }
 
   .hero-meta { flex-wrap: wrap; gap: 1rem; }
