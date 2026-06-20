@@ -36,9 +36,9 @@
     PARTICLE_SIZE: 0.55,
     SPEED: 0.06,
     MOUSE_INFLUENCE: 14,
-    COLOR_PRIMARY: new THREE.Color(0x93c5fd),   // Bleu clair
-    COLOR_ACCENT: new THREE.Color(0xfde68a),    // Or clair
-    COLOR_DIM: new THREE.Color(0xc7d2fe),       // Indigo clair
+    COLOR_PRIMARY: new THREE.Color(0xD4AF37),   // Or (dominant)
+    COLOR_ACCENT: new THREE.Color(0x0F3460),    // Bleu premium (accent)
+    COLOR_DIM: new THREE.Color(0x071A52),       // Bleu nuit
   };
 
   /* ── Mouse ────────────────────────────────────────── */
@@ -91,9 +91,9 @@
     size: CONFIG.PARTICLE_SIZE,
     vertexColors: true,
     transparent: true,
-    opacity: 0.95,
+    opacity: 0.70,
     sizeAttenuation: true,
-    blending: THREE.AdditiveBlending,
+    blending: THREE.NormalBlending,
     depthWrite: false,
   });
 
@@ -114,8 +114,8 @@
     new THREE.LineBasicMaterial({
       vertexColors: true,
       transparent: true,
-      opacity: 0.45,
-      blending: THREE.AdditiveBlending,
+      opacity: 0.50,
+      blending: THREE.NormalBlending,
       depthWrite: false,
     })
   );
@@ -126,9 +126,9 @@
   scene.add(orbGroup);
 
   const orbData = [
-    { color: 0x93c5fd, x: -40, y: 20, z: -30, size: 12, speed: 0.0004 },
-    { color: 0xfde68a, x:  45, y: -18, z: -20, size: 8,  speed: 0.0006 },
-    { color: 0xc7d2fe, x:   5, y:  30, z: -40, size: 16, speed: 0.0003 },
+    { color: 0xD4AF37, x: -40, y: 20, z: -30, size: 12, speed: 0.0004 },
+    { color: 0x0F3460, x:  45, y: -18, z: -20, size: 8,  speed: 0.0006 },
+    { color: 0x071A52, x:   5, y:  30, z: -40, size: 16, speed: 0.0003 },
   ];
 
   orbData.forEach((o) => {
@@ -174,11 +174,10 @@
           linePositions[base + 4] = positions[j3 + 1];
           linePositions[base + 5] = positions[j3 + 2];
 
-          // Colour — gold near accent particles, light blue elsewhere
-          const isAccent = colors[i3 + 1] < 0.6 && colors[i3] < 0.3;
-          const r = isAccent ? 0.99 * alpha : 0.58 * alpha;
-          const g = isAccent ? 0.90 * alpha : 0.77 * alpha;
-          const b = isAccent ? 0.54 * alpha : 0.99 * alpha;
+          // Colour — bleu électrique pour toutes les lignes (#3B82F6)
+          const r = 0.231 * alpha;
+          const g = 0.510 * alpha;
+          const b = 0.965 * alpha;
 
           lineColors[base]     = r; lineColors[base + 1] = g; lineColors[base + 2] = b;
           lineColors[base + 3] = r; lineColors[base + 4] = g; lineColors[base + 5] = b;
