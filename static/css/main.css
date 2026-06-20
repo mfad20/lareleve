@@ -644,7 +644,7 @@ section { position: relative; z-index: 1; }
   font-family: var(--font-display);
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-style: italic;
-  color: #334155;
+  color: var(--gold);
   margin-bottom: 1.5rem;
   opacity: 0;
   white-space: nowrap;
@@ -653,7 +653,7 @@ section { position: relative; z-index: 1; }
 
 .hero-sub {
   font-size: clamp(0.9rem, 1.5vw, 1.05rem);
-  color: #475569;
+  color: #000000;
   max-width: 560px;
   line-height: 1.7;
   margin-bottom: 2.5rem;
