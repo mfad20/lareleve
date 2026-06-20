@@ -1,5 +1,6 @@
 import os
-from flask import Flask, render_template, request, jsonify, redirect, url_for, flash
+from functools import wraps
+from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import re
@@ -156,13 +157,19 @@ PROGRAMME = {
     ],
     "restructuration": [
         {"titre": "Cartes de Félicitation", "icone": "gift", "description": "Envoi de cartes aux nouveaux lauréats bien avant le bootcamp, pour un accueil chaleureux dès la réussite."},
-        {"titre": "Préakwaba", "icone": "star", "description": "Dispositif d'accueil innovant pour les nouveaux, créant un sentiment d'appartenance immédiat."},
         {"titre": "Boutique de l'Expert", "icone": "shopping-bag", "description": "Retour de la boutique institutionnelle avec une gamme élargie de produits DISE."},
         {"titre": "Activités Détente", "icone": "gamepad-2", "description": "Moments de cohésion et de bien-être pour équilibrer l'exigence académique."},
         {"titre": "Simulation d'Entretien", "icone": "target", "description": "Préparation intensive aux entretiens d'embauche avec des professionnels RH."},
         {"titre": "Formation Recherche d'Emploi", "icone": "bar-chart-2", "description": "Ateliers pratiques sur les techniques modernes de recherche d'emploi."}
     ],
     "innovations": [
+        {
+            "titre": "Pré-Akwaba",
+            "icone": "star",
+            "badge": "Accueil & Intégration",
+            "description": "Dispositif d'accueil innovant pour les nouveaux, créant un sentiment d'appartenance immédiat dès leur admission à l'ENSEA.",
+            "impact": "Intégration immédiate"
+        },
         {
             "titre": "Site Web de la DISE",
             "icone": "globe",
@@ -204,7 +211,7 @@ PROGRAMME = {
 CHIFFRES = [
     {"valeur": 6, "label": "Membres de la liste", "suffix": "", "icone": "users"},
     {"valeur": 13, "label": "Expériences associatives", "suffix": "+", "icone": "award"},
-    {"valeur": 5, "label": "Innovations majeures", "suffix": "", "icone": "lightbulb"},
+    {"valeur": 6, "label": "Innovations majeures", "suffix": "", "icone": "lightbulb"},
     {"valeur": 20, "label": "Ans de la Céleste à célébrer", "suffix": "", "icone": "cake"},
     {"valeur": 100, "label": "Engagement total", "suffix": "%", "icone": "flame"},
     {"valeur": 7, "label": "Activités traditionnelles", "suffix": "", "icone": "calendar"}
@@ -232,6 +239,20 @@ VALEURS = [
         "description": "Nous voulons que chaque ISE soit reconnu partout sur le continent africain comme un expert incontournable."
     }
 ]
+
+# ──────────────────────────────────────────────
+# ADMIN AUTH
+# ──────────────────────────────────────────────
+
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'lareleve2026')
+
+def admin_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if not session.get('admin_logged_in'):
+            return redirect(url_for('admin_login'))
+        return f(*args, **kwargs)
+    return decorated
 
 # ──────────────────────────────────────────────
 # ROUTES
@@ -316,6 +337,47 @@ def contact():
             return redirect(url_for('contact'))
 
     return render_template('contact.html')
+
+@app.route('/admin')
+def admin():
+    return redirect(url_for('admin_login'))
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        if request.form.get('password', '') == ADMIN_PASSWORD:
+            session['admin_logged_in'] = True
+            return redirect(url_for('admin_messages'))
+        flash('Mot de passe incorrect.', 'error')
+    return render_template('admin_login.html')
+
+@app.route('/admin/messages')
+@admin_required
+def admin_messages():
+    messages = Contact.query.order_by(Contact.date_envoi.desc()).all()
+    non_lus = Contact.query.filter_by(lu=False).count()
+    return render_template('admin_messages.html', messages=messages, non_lus=non_lus)
+
+@app.route('/admin/marquer-lu/<int:id>', methods=['POST'])
+@admin_required
+def admin_marquer_lu(id):
+    msg = Contact.query.get_or_404(id)
+    msg.lu = not msg.lu
+    db.session.commit()
+    return redirect(url_for('admin_messages'))
+
+@app.route('/admin/supprimer/<int:id>', methods=['POST'])
+@admin_required
+def admin_supprimer(id):
+    msg = Contact.query.get_or_404(id)
+    db.session.delete(msg)
+    db.session.commit()
+    return redirect(url_for('admin_messages'))
+
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('admin_logged_in', None)
+    return redirect(url_for('admin_login'))
 
 @app.route('/robots.txt')
 def robots():

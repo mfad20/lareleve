@@ -487,7 +487,7 @@ section { position: relative; z-index: 1; }
   inset: 0;
   background-size: cover;
   background-position: center;
-  opacity: 0.2;
+  opacity: 0.8;
 }
 
 .carousel-slide {
@@ -624,7 +624,7 @@ section { position: relative; z-index: 1; }
   font-family: var(--font-space);
   font-size: clamp(3rem, 10vw, 7rem);
   font-weight: 700;
-  color: #0f172a;
+  color:var(--gold);
   letter-spacing: 0.3em;
   opacity: 0;
   text-shadow: none;
@@ -2772,7 +2772,10 @@ section { position: relative; z-index: 1; }
 
   /* Hero mobile : titre en haut, slogan+paragraphe+badge en bas */
   .hero {
-    align-items: center;
+    height: 100vh;
+    height: 100svh;
+    min-height: 100svh;
+    align-items: stretch;
     padding: calc(var(--nav-h) + 1rem) 0 2.5rem;
   }
 
@@ -2781,16 +2784,13 @@ section { position: relative; z-index: 1; }
     flex-direction: column;
     align-items: center;
     width: 100%;
-    /* min-height explicite = hauteur dispo dans le hero
-       → permet à margin-top:auto de fonctionner sur .hero-slogan */
-    min-height: calc(100vh - var(--nav-h) - 3.5rem);
   }
 
   .hero-la { font-size: clamp(2.5rem, 10vw, 4rem); }
   .hero-releve { font-size: clamp(3.5rem, 16vw, 7rem); }
 
-  /* margin-top:auto absorbe tout l'espace libre entre le titre et le slogan
-     → slogan + paragraphe + badge + boutons poussés tout en bas */
+  /* align-items:stretch donne à hero-container la hauteur exacte du hero
+     → margin-top:auto absorbe tout l'espace et pousse le bloc vers le bas */
   .hero-slogan {
     margin-top: auto;
     padding-top: 0.5rem;
