@@ -497,10 +497,11 @@ section { position: relative; z-index: 1; }
   background-repeat: no-repeat;
   background-position: center bottom;
   opacity: 0;
+  mix-blend-mode: multiply;
   transition: opacity 1.4s ease-in-out;
 }
 
-.carousel-slide.active { opacity: 0.50; }
+.carousel-slide.active { opacity: 1; }
 
 .hero-carousel-bg::after {
   content: '';
