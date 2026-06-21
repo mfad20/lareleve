@@ -589,8 +589,9 @@ section { position: relative; z-index: 1; }
 .hero {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  padding: calc(var(--nav-h) + 4rem) 0 6rem;
+  padding: calc(var(--nav-h) + 2rem) 0 4rem;
   position: relative;
   overflow: hidden;
   text-align: center;
@@ -607,7 +608,15 @@ section { position: relative; z-index: 1; }
   mask-image: radial-gradient(ellipse at 50% 50%, black 30%, transparent 80%);
 }
 
-.hero-container { position: relative; z-index: 1; }
+.hero-container {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+}
 
 .hero-badge {
   display: inline-flex;
@@ -671,6 +680,7 @@ section { position: relative; z-index: 1; }
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-style: italic;
   color: var(--gold);
+  margin-top: auto;
   margin-bottom: 1.5rem;
   opacity: 0;
   white-space: nowrap;
@@ -767,7 +777,7 @@ section { position: relative; z-index: 1; }
   color: #94a3b8;
 }
 
-.scroll-arrow { animation: scrollBounce 2s ease-in-out infinite; }
+.scroll-arrow { animation: scrollBounce 2s ease-in-out infinite;color: #94a3b8; }
 
 @keyframes scrollBounce {
   0%, 100% { transform: translateY(0); }
@@ -2813,24 +2823,20 @@ section { position: relative; z-index: 1; }
     height: 100vh;
     height: 100svh;
     min-height: 100svh;
-    align-items: stretch;
     padding: calc(var(--nav-h) + 1rem) 0 2.5rem;
   }
 
-  .hero-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
+  /* Boutons et stats masqués dans le hero pour que le bloc slogan
+     soit suffisamment compact et descende vraiment en bas */
+  .hero .hero-actions,
+  .hero .hero-meta { display: none; }
 
   .hero-la { font-size: clamp(2.5rem, 10vw, 4rem); }
   .hero-releve { font-size: clamp(3.5rem, 16vw, 7rem); }
 
-  /* align-items:stretch donne à hero-container la hauteur exacte du hero
-     → margin-top:auto absorbe tout l'espace et pousse le bloc vers le bas */
+  /* margin-top:auto (défini globalement) absorbe l'espace libre
+     entre le titre et le slogan → bloc slogan en bas du hero */
   .hero-slogan {
-    margin-top: auto;
     padding-top: 0.5rem;
     white-space: normal;
   }
@@ -2838,7 +2844,10 @@ section { position: relative; z-index: 1; }
   .hero-sub {
     text-align: left;
     max-width: 100%;
+    margin-bottom: 1.25rem;
   }
+
+  .hero-badge { margin-bottom: 0; }
 
   .page-hero { padding: calc(var(--nav-h) + 2rem) 0 4rem; }
 
