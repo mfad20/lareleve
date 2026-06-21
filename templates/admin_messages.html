@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Messages — Admin La Relève</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+    }
+    /* ── Header ── */
+    .topbar {
+      background: #1e293b;
+      border-bottom: 1px solid rgba(212,175,55,0.15);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 1rem; }
+    .topbar-title { font-size: 1.1rem; font-weight: 700; color: #D4AF37; }
+    .badge-count {
+      background: #D4AF37;
+      color: #0f172a;
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 0.15rem 0.55rem;
+      border-radius: 999px;
+    }
+    .btn-logout {
+      background: rgba(239,68,68,0.12);
+      border: 1px solid rgba(239,68,68,0.25);
+      color: #fca5a5;
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover { background: rgba(239,68,68,0.22); }
+    /* ── Content ── */
+    .content { padding: 2rem; max-width: 1100px; margin: 0 auto; }
+    .stats { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+    .stat-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1rem 1.5rem;
+      min-width: 140px;
+    }
+    .stat-value { font-size: 1.8rem; font-weight: 800; color: #D4AF37; }
+    .stat-label { font-size: 0.78rem; color: #64748b; margin-top: 0.2rem; }
+    /* ── Empty ── */
+    .empty {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #475569;
+    }
+    .empty svg { margin: 0 auto 1rem; opacity: 0.3; }
+    /* ── Cards ── */
+    .msg-list { display: flex; flex-direction: column; gap: 1rem; }
+    .msg-card {
+      background: #1e293b;
+      border: 1px solid #334155;
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .msg-card.unread { border-left: 3px solid #D4AF37; }
+    .msg-card.read { opacity: 0.65; }
+    .msg-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.75rem;
+    }
+    .msg-meta { flex: 1; }
+    .msg-name { font-size: 1rem; font-weight: 700; color: #f1f5f9; }
+    .msg-contact { font-size: 0.8rem; color: #94a3b8; margin-top: 0.25rem; display: flex; flex-wrap: wrap; gap: 0.5rem 1rem; }
+    .msg-contact a { color: #3B82F6; text-decoration: none; }
+    .msg-contact a:hover { text-decoration: underline; }
+    .msg-date { font-size: 0.75rem; color: #475569; white-space: nowrap; flex-shrink: 0; }
+    .msg-body {
+      background: #0f172a;
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
+      white-space: pre-wrap;
+      word-break: break-word;
+    }
+    .msg-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+    .btn-sm {
+      padding: 0.4rem 0.85rem;
+      border-radius: 7px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s;
+    }
+    .btn-lu {
+      background: rgba(212,175,55,0.15);
+      color: #D4AF37;
+      border: 1px solid rgba(212,175,55,0.25);
+    }
+    .btn-lu:hover { background: rgba(212,175,55,0.25); }
+    .btn-del {
+      background: rgba(239,68,68,0.12);
+      color: #fca5a5;
+      border: 1px solid rgba(239,68,68,0.2);
+    }
+    .btn-del:hover { background: rgba(239,68,68,0.22); }
+    .pill-unread {
+      display: inline-block;
+      background: #D4AF37;
+      color: #0f172a;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 0.1rem 0.45rem;
+      border-radius: 999px;
+      vertical-align: middle;
+      margin-left: 0.4rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-left">
+    <span class="topbar-title">LA RELÈVE · Messages</span>
+    {% if non_lus > 0 %}
+      <span class="badge-count">{{ non_lus }} non lu{{ 's' if non_lus > 1 }}</span>
+    {% endif %}
+  </div>
+  <a href="{{ url_for('admin_logout') }}" class="btn-logout">Déconnexion</a>
+</div>
+
+<div class="content">
+  <!-- Stats -->
+  <div class="stats">
+    <div class="stat-card">
+      <div class="stat-value">{{ messages|length }}</div>
+      <div class="stat-label">Total messages</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ non_lus }}</div>
+      <div class="stat-label">Non lus</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value">{{ messages|length - non_lus }}</div>
+      <div class="stat-label">Lus</div>
+    </div>
+  </div>
+
+  {% if not messages %}
+    <div class="empty">
+      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>
+      </svg>
+      <p>Aucun message pour le moment.</p>
+    </div>
+  {% else %}
+    <div class="msg-list">
+      {% for msg in messages %}
+      <div class="msg-card {{ 'unread' if not msg.lu else 'read' }}">
+        <div class="msg-header">
+          <div class="msg-meta">
+            <div class="msg-name">
+              {{ msg.nom }}
+              {% if not msg.lu %}<span class="pill-unread">Nouveau</span>{% endif %}
+            </div>
+            <div class="msg-contact">
+              <a href="mailto:{{ msg.email }}">{{ msg.email }}</a>
+              {% if msg.telephone %}<span>{{ msg.telephone }}</span>{% endif %}
+            </div>
+          </div>
+          <div class="msg-date">
+            {{ msg.date_envoi.strftime('%d/%m/%Y à %H:%M') }}
+          </div>
+        </div>
+
+        <div class="msg-body">{{ msg.message }}</div>
+
+        <div class="msg-actions">
+          <form method="POST" action="{{ url_for('admin_marquer_lu', id=msg.id) }}" style="display:inline;">
+            <button type="submit" class="btn-sm btn-lu">
+              {{ 'Marquer non lu' if msg.lu else 'Marquer lu' }}
+            </button>
+          </form>
+          <form method="POST" action="{{ url_for('admin_supprimer', id=msg.id) }}" style="display:inline;"
+                onsubmit="return confirm('Supprimer ce message ?');">
+            <button type="submit" class="btn-sm btn-del">Supprimer</button>
+          </form>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+</body>
+</html>
