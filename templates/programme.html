@@ -1,0 +1,223 @@
+{% extends "base.html" %}
+
+{% block title %}Programme — La Relève | DISE ENSEA 2026{% endblock %}
+{% block meta_desc %}Découvrez le programme complet de La Relève pour la DISE 2026-2027 : activités traditionnelles, restructurations et 5 innovations majeures.{% endblock %}
+
+{% block content %}
+
+<!-- PAGE HERO -->
+<section class="page-hero">
+  <div class="hero-carousel-bg">
+    <div class="carousel-slide active" style="background-image:url('{{ url_for('static', filename='images/equipe_complet.png') }}')"></div>
+    <div class="carousel-slide" style="background-image:url('{{ url_for('static', filename='images/photo_remerciement.png') }}')"></div>
+  </div>
+
+  <div class="page-aurora">
+    <div class="aurora-1"></div>
+    <div class="aurora-2"></div>
+  </div>
+  <div class="container">
+    <div class="page-hero-inner" data-aos="fade-up">
+      <span class="section-eyebrow">Notre Programme</span>
+      <h1 class="page-title">Le programme de <span class="gold">La Relève</span></h1>
+      <p class="page-subtitle">Trois axes d'action : maintenir l'existant, l'améliorer, et innover. Un engagement concret pour chaque membre de la DISE.</p>
+    </div>
+  </div>
+  <div class="page-hero-line"></div>
+</section>
+
+<!-- TABS NAVIGATION -->
+<section class="section-programme-tabs">
+  <div class="container">
+    <div class="prog-tabs" role="tablist" data-aos="fade-up">
+      <button class="prog-tab active" role="tab" aria-selected="true" aria-controls="tab-traditionnel" data-tab="traditionnel">
+        <span><i data-lucide="landmark"></i></span> Activités Traditionnelles
+      </button>
+      <button class="prog-tab" role="tab" aria-selected="false" aria-controls="tab-restructuration" data-tab="restructuration">
+        <span><i data-lucide="refresh-cw"></i></span> Restructuration
+      </button>
+      <button class="prog-tab" role="tab" aria-selected="false" aria-controls="tab-innovations" data-tab="innovations">
+        <span><i data-lucide="lightbulb"></i></span> Innovations
+      </button>
+    </div>
+
+    <!-- TAB: TRADITIONNEL -->
+    <div id="tab-traditionnel" class="prog-panel active" role="tabpanel" data-aos="fade-up">
+      <div class="prog-panel-header">
+        <h2>Activités <span class="gold">traditionnelles</span></h2>
+        <p>Ces activités sont le socle de la DISE. Nous ne les supprimons pas — nous les assumons pleinement, les organisons avec sérieux et les améliorons là où c'est nécessaire.</p>
+      </div>
+      <div class="prog-cards-grid">
+        {% for act in programme.traditionnel %}
+        <div class="prog-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 60 }}">
+          <div class="prog-card-icon"><i data-lucide="{{ act.icone }}"></i></div>
+          <div class="prog-card-num">0{{ loop.index }}</div>
+          <h3>{{ act.titre }}</h3>
+          <p>{{ act.description }}</p>
+          <div class="prog-card-status">
+            <span class="status-dot status-maintain"></span>
+            Maintenu & renforcé
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- TAB: RESTRUCTURATION -->
+    <div id="tab-restructuration" class="prog-panel" role="tabpanel" data-aos="fade-up">
+      <div class="prog-panel-header">
+        <h2>Restructuration de <span class="electric">l'existant</span></h2>
+        <p>Nous ne voulons pas seulement répéter ce qui a été fait. Nous voulons y apporter notre touche avec des améliorations concrètes et mesurables.</p>
+      </div>
+      <div class="prog-cards-grid">
+        {% for act in programme.restructuration %}
+        <div class="prog-card prog-card--new" data-aos="fade-up" data-aos-delay="{{ loop.index * 60 }}">
+          <div class="prog-card-icon"><i data-lucide="{{ act.icone }}"></i></div>
+          <div class="prog-card-num">0{{ loop.index }}</div>
+          <h3>{{ act.titre }}</h3>
+          <p>{{ act.description }}</p>
+          <div class="prog-card-status">
+            <span class="status-dot status-improved"></span>
+            Amélioré & renforcé
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- TAB: INNOVATIONS -->
+    <div id="tab-innovations" class="prog-panel" role="tabpanel" data-aos="fade-up">
+      <div class="prog-panel-header">
+        <h2>Nos <span class="gold">6 innovations</span> phares</h2>
+        <p>Des projets entièrement nouveaux, pensés pour propulser la DISE dans une nouvelle dimension. Chaque innovation a un impact mesurable.</p>
+      </div>
+
+      <div class="innovations-timeline">
+        {% for inno in programme.innovations %}
+        <div class="inno-timeline-item {% if loop.index % 2 == 0 %}inno-right{% endif %}" data-aos="{{ 'fade-right' if loop.index % 2 != 0 else 'fade-left' }}" data-aos-delay="{{ loop.index * 80 }}">
+          <div class="inno-timeline-dot">{{ loop.index }}</div>
+          <div class="inno-timeline-card">
+            <div class="itc-glow"></div>
+            <div class="itc-header">
+              <span class="itc-icon"><i data-lucide="{{ inno.icone }}"></i></span>
+              <span class="itc-badge">{{ inno.badge }}</span>
+            </div>
+            <h3>{{ inno.titre }}</h3>
+            <p>{{ inno.description }}</p>
+            <div class="itc-impact">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+              <span>Impact : <strong>{{ inno.impact }}</strong></span>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+        <div class="inno-timeline-line"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION PROGRAMME RÉSUMÉ -->
+<section class="section-prog-summary" data-aos="fade-up">
+  <div class="container">
+    <div class="prog-summary-grid">
+      <div class="prog-summary-card">
+        <div class="psc-icon"><i data-lucide="landmark"></i></div>
+        <div class="psc-num">7</div>
+        <div class="psc-label">Activités Traditionnelles</div>
+        <div class="psc-desc">Maintenues et renforcées</div>
+      </div>
+      <div class="prog-summary-card">
+        <div class="psc-icon"><i data-lucide="refresh-cw"></i></div>
+        <div class="psc-num">5</div>
+        <div class="psc-label">Restructurations</div>
+        <div class="psc-desc">Améliorations concrètes</div>
+      </div>
+      <div class="prog-summary-card">
+        <div class="psc-icon"><i data-lucide="lightbulb"></i></div>
+        <div class="psc-num">6</div>
+        <div class="psc-label">Innovations Phares</div>
+        <div class="psc-desc">Projets entièrement nouveaux</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AMBITIONS EN COURS -->
+<section class="section-ambitions" data-aos="fade-up">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-eyebrow">Horizons</span>
+      <h2 class="section-title">Nos ambitions <span class="gold">à long terme</span></h2>
+    </div>
+    <div class="ambitions-grid">
+      <div class="ambition-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="amb-icon"><i data-lucide="building-2"></i></div>
+        <h3>Partenariats Big 4</h3>
+        <p>Faciliter l'intégration des ISE dans les grands cabinets d'audit et de conseil : Deloitte, PwC, EY, KPMG.</p>
+        <span class="amb-status">En exploration</span>
+      </div>
+      <div class="ambition-card" data-aos="fade-up" data-aos-delay="180">
+        <div class="amb-icon"><i data-lucide="globe-2"></i></div>
+        <h3>Réseau ISE Africain</h3>
+        <p>Collaboration avec les ISE des autres écoles de statistiques d'Afrique pour créer un réseau continental fort.</p>
+        <span class="amb-status">En discussion</span>
+      </div>
+      <div class="ambition-card" data-aos="fade-up" data-aos-delay="260">
+        <div class="amb-icon"><i data-lucide="bar-chart-2"></i></div>
+        <h3>Observatoire des ISE</h3>
+        <p>Mise en place de statistiques sur les parcours et insertions des ISE diplômés — nos données au service de notre communauté.</p>
+        <span class="amb-status">À l'étude</span>
+      </div>
+      <div class="ambition-card" data-aos="fade-up" data-aos-delay="340">
+        <div class="amb-icon"><i data-lucide="book-open"></i></div>
+        <h3>Suivi Académique ISE1</h3>
+        <p>Refonte complète du suivi académique des premières années pour réduire l'échec et mieux intégrer les nouveaux.</p>
+        <span class="amb-status">Prioritaire</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section-vote-cta" data-aos="fade-up">
+  <div class="container">
+    <div class="vote-cta-inner">
+      <span class="section-eyebrow">Un programme concret</span>
+      <h2>Prêt à <span class="gold">bâtir l'avenir</span> avec nous ?</h2>
+      <p>Chaque activité de notre programme a été pensée pour vous, pour la DISE, pour l'ENSEA.</p>
+      <div class="vote-actions">
+        <a href="{{ url_for('equipe') }}" class="btn-primary">Découvrir l'équipe</a>
+        <a href="{{ url_for('contact') }}" class="btn-ghost">Nous contacter</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Tab system
+document.querySelectorAll('.prog-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    const target = tab.dataset.tab;
+
+    document.querySelectorAll('.prog-tab').forEach(t => {
+      t.classList.remove('active');
+      t.setAttribute('aria-selected', 'false');
+    });
+    document.querySelectorAll('.prog-panel').forEach(p => p.classList.remove('active'));
+
+    tab.classList.add('active');
+    tab.setAttribute('aria-selected', 'true');
+
+    const panel = document.getElementById('tab-' + target);
+    panel.classList.add('active');
+
+    // Re-trigger AOS for newly visible elements
+    AOS.refresh();
+  });
+});
+</script>
+{% endblock %}

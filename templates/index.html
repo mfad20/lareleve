@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}LA RELÈVE — Héritiers d'exigence, bâtisseurs d'avenir | DISE ENSEA 2026{% endblock %}
+{% block meta_desc %}La Relève, liste candidate à l'élection de la Direction ISE (DISE) 2026-2027 à l'ENSEA d'Abidjan. Une DISE unie, reconnue et influente pour chaque étudiant statisticien économiste.{% endblock %}
+
+{% block content %}
+
+<!-- ══════════════════════════════════════════
+     HERO SECTION
+══════════════════════════════════════════ -->
+<section class="hero" id="hero">
+  <div class="hero-carousel-bg">
+    <div class="carousel-slide active" style="background-image:url('{{ url_for('static', filename='images/equipe_complet.png') }}')"></div>
+    <div class="carousel-slide" style="background-image:url('{{ url_for('static', filename='images/photo_remerciement.png') }}')"></div>
+  </div>
+
+
+  <div class="container hero-container">
+
+
+    <h1 class="hero-title" id="heroTitle">
+      <span class="hero-title-line hero-la">LA</span>
+      <span class="hero-title-line hero-releve">RELÈVE</span>
+    </h1>
+
+    <p class="hero-slogan" id="heroSlogan">
+      Héritiers d'exigence, bâtisseurs d'avenir
+    </p>
+
+    <p class="hero-sub" id="heroSub">
+      Nous ne venons pas tout réinventer. Nous venons poursuivre l'engagement, honorer la vision établie par nos prédécesseurs, et bâtir une DISE <strong>unie, reconnue et influente</strong>.
+    </p>
+    <div class="hero-badge" id="heroBadge">
+      <span class="badge-dot"></span>
+      Élection DISE · ENSEA · Juin 2026
+    </div>
+    <div class="hero-actions" id="heroActions">
+      <a href="{{ url_for('programme') }}" class="btn-primary btn-hero">
+        Découvrir le programme
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="{{ url_for('equipe') }}" class="btn-ghost btn-hero">
+        Rencontrer l'équipe
+      </a>
+    </div>
+
+    <div class="hero-meta" id="heroMeta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">6</span>
+        <span class="hero-meta-label">Membres</span>
+      </div>
+      <div class="hero-meta-divider"></div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">5</span>
+        <span class="hero-meta-label">Innovations</span>
+      </div>
+      <div class="hero-meta-divider"></div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-num">1</span>
+        <span class="hero-meta-label">Vision</span>
+      </div>
+    </div>
+
+    <div class="hero-scroll-hint" id="heroScroll">
+      <span>Découvrir</span>
+      <div class="scroll-arrow">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION VISION
+══════════════════════════════════════════ -->
+<section class="section-vision" id="vision-home">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-eyebrow">Notre Vision</span>
+      <h2 class="section-title">Une DISE <span class="gold">unie</span>, reconnue, <span class="electric">influente</span></h2>
+    </div>
+
+    <div class="vision-grid">
+      <div class="vision-text" data-aos="fade-right" data-aos-delay="100">
+        <p class="vision-intro">
+          Nous rêvons d'une DISE où chaque étudiant se sent <strong>fier d'appartenir à la Céleste Division</strong>.
+        </p>
+        <div class="vision-pillars">
+          <div class="vision-pillar">
+            <div class="pillar-icon"><i data-lucide="handshake"></i></div>
+            <div>
+              <h3>Unie</h3>
+              <p>ISE 1, 2 et 3 se connaissent, s'entraident et travaillent ensemble.</p>
+            </div>
+          </div>
+          <div class="vision-pillar">
+            <div class="pillar-icon"><i data-lucide="trophy"></i></div>
+            <div>
+              <h3>Reconnue</h3>
+              <p>Reconnue à l'ENSEA comme à l'extérieur, par les entreprises, les partenaires et les autres écoles.</p>
+            </div>
+          </div>
+          <div class="vision-pillar">
+            <div class="pillar-icon"><i data-lucide="globe-2"></i></div>
+            <div>
+              <h3>Influente</h3>
+              <p>Qui compte dans le débat sur le développement africain et qui forme des statisticiens économistes respectés partout sur le continent africain et d'ailleurs.</p>
+            </div>
+          </div>
+        </div>
+        <a href="{{ url_for('vision') }}" class="btn-outline">Voir notre vision complète →</a>
+      </div>
+
+      <div class="vision-card-wrap" data-aos="fade-left" data-aos-delay="200">
+        <div class="vision-glow-card">
+          <div class="vgc-header">
+            <span class="vgc-label">Notre engagement</span>
+            <div class="vgc-dots"><span></span><span></span><span></span></div>
+          </div>
+          <blockquote class="vgc-quote">
+            "Être la relève, c'est reconnaître ce qui a été fait avant nous, tout en apportant notre énergie, nos idées et notre détermination pour faire avancer la DISE encore plus loin."
+          </blockquote>
+          <div class="vgc-author">
+            <div class="vgc-avatar">AM</div>
+            <div>
+              <strong>ASSOUMOU Raoul Martial</strong>
+              <span>Président — La Relève</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION VALEURS
+══════════════════════════════════════════ -->
+<section class="section-valeurs" id="valeurs">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-eyebrow">Nos Valeurs</span>
+      <h2 class="section-title">Ce qui nous <span class="gold">définit</span></h2>
+    </div>
+
+    <div class="valeurs-grid">
+      {% for valeur in valeurs %}
+      <div class="valeur-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 80 }}">
+        <div class="valeur-icon"><i data-lucide="{{ valeur.icone }}"></i></div>
+        <h3>{{ valeur.titre }}</h3>
+        <p>{{ valeur.description }}</p>
+        <div class="valeur-glow"></div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION CHIFFRES CLÉS
+══════════════════════════════════════════ -->
+<section class="section-chiffres" id="chiffres">
+  <div class="chiffres-bg"></div>
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-eyebrow">La Relève en chiffres</span>
+      <h2 class="section-title">Des données <span class="gold">concrètes</span></h2>
+    </div>
+
+    <!-- Lucide SVG icons replacing emoji for chiffres -->
+    <div class="chiffres-grid">
+      <div class="chiffre-card" data-aos="zoom-in" data-aos-delay="60">
+        <div class="chiffre-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="chiffre-num"><span data-count="6">0</span></div>
+        <div class="chiffre-label">Membres de la liste</div>
+      </div>
+      <div class="chiffre-card" data-aos="zoom-in" data-aos-delay="120">
+        <div class="chiffre-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+        </div>
+        <div class="chiffre-num"><span data-count="13">0</span>+</div>
+        <div class="chiffre-label">Expériences associatives</div>
+      </div>
+      <div class="chiffre-card" data-aos="zoom-in" data-aos-delay="180">
+        <div class="chiffre-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        </div>
+        <div class="chiffre-num"><span data-count="5">0</span></div>
+        <div class="chiffre-label">Innovations majeures</div>
+      </div>
+      <div class="chiffre-card" data-aos="zoom-in" data-aos-delay="240">
+        <div class="chiffre-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <div class="chiffre-num"><span data-count="20">0</span></div>
+        <div class="chiffre-label">Ans de la Céleste à célébrer</div>
+      </div>
+      <div class="chiffre-card" data-aos="zoom-in" data-aos-delay="300">
+        <div class="chiffre-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+        </div>
+        <div class="chiffre-num"><span data-count="100">0</span>%</div>
+        <div class="chiffre-label">Engagement total</div>
+      </div>
+      <div class="chiffre-card" data-aos="zoom-in" data-aos-delay="360">
+        <div class="chiffre-icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="chiffre-num"><span data-count="7">0</span></div>
+        <div class="chiffre-label">Activités traditionnelles</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION APERÇU PROGRAMME
+══════════════════════════════════════════ -->
+<section class="section-programme-preview" id="programme-preview">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-eyebrow">Notre Programme</span>
+      <h2 class="section-title">5 innovations <span class="electric">phares</span></h2>
+      <p class="section-sub">Des projets concrets qui transformeront la DISE pour les années à venir.</p>
+    </div>
+
+    <div class="innovations-grid">
+      {% for inno in programme.innovations %}
+      <div class="inno-card" data-aos="fade-up" data-aos-delay="{{ loop.index * 70 }}">
+        <div class="inno-card-inner">
+          <div class="inno-header">
+            <span class="inno-icon"><i data-lucide="{{ inno.icone }}"></i></span>
+            <span class="inno-badge">{{ inno.badge }}</span>
+          </div>
+          <h3>{{ inno.titre }}</h3>
+          <p>{{ inno.description }}</p>
+          <div class="inno-footer">
+            <span class="inno-impact">{{ inno.impact }}</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </div>
+        </div>
+        <div class="inno-glow"></div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="section-cta" data-aos="fade-up">
+      <a href="{{ url_for('programme') }}" class="btn-primary">Voir le programme complet →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION APERÇU ÉQUIPE
+══════════════════════════════════════════ -->
+<section class="section-equipe-preview" id="equipe-preview">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-eyebrow">Notre Équipe</span>
+      <h2 class="section-title">6 bâtisseurs <span class="gold">engagés</span></h2>
+      <p class="section-sub">Une liste unie par l'ambition de faire rayonner la DISE.</p>
+    </div>
+
+    <div class="team-preview-grid">
+      {% for membre in membres %}
+      <div class="team-card-preview" data-aos="fade-up" data-aos-delay="{{ loop.index * 80 }}" data-tilt data-tilt-max="8" data-tilt-speed="400">
+        <div class="tcp-glow" style="background: radial-gradient(circle, {{ membre.couleur }}30 0%, transparent 70%);"></div>
+        <div class="tcp-photo-wrap" style="border-color: {{ membre.couleur }}60;">
+          <img src="{{ url_for('static', filename='images/' + membre.photo) }}" alt="{{ membre.prenom }}" />
+        </div>
+        <h3>{{ membre.prenom }}</h3>
+        <p class="tcp-nom">{{ membre.nom.split(' ')[0] }}</p>
+        <span class="tcp-poste" style="color: {{ membre.couleur }};">{{ membre.poste }}</span>
+        <span class="tcp-niveau">{{ membre.niveau }}</span>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="section-cta" data-aos="fade-up">
+      <a href="{{ url_for('equipe') }}" class="btn-primary">Découvrir toute l'équipe →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION ACTIVITÉS TRADITIONNELLES
+══════════════════════════════════════════ -->
+<section class="section-activites" id="activites">
+  <div class="container">
+    <div class="section-header" data-aos="fade-up">
+      <span class="section-eyebrow">Activités</span>
+      <h2 class="section-title">Ce que nous <span class="gold">maintenons</span> et <span class="electric">innovons</span></h2>
+    </div>
+
+    <div class="activites-track">
+      <div class="activites-scroll" id="activitesScroll">
+        {% for act in programme.traditionnel %}
+        <div class="act-pill">
+          <span class="act-pill-icon"><i data-lucide="{{ act.icone }}"></i></span>
+          <span>{{ act.titre }}</span>
+        </div>
+        {% endfor %}
+        {% for act in programme.restructuration %}
+        <div class="act-pill act-pill--new">
+          <span class="act-pill-icon"><i data-lucide="{{ act.icone }}"></i></span>
+          <span>{{ act.titre }}</span>
+          <span class="act-pill-new">Nouveau</span>
+        </div>
+        {% endfor %}
+        <!-- Repeat for seamless scroll -->
+        {% for act in programme.traditionnel %}
+        <div class="act-pill" aria-hidden="true">
+          <span class="act-pill-icon"><i data-lucide="{{ act.icone }}"></i></span>
+          <span>{{ act.titre }}</span>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION CTA FINAL
+══════════════════════════════════════════ -->
+<section class="section-cta-final" id="cta-final">
+  <div class="cta-aurora">
+    <div class="cta-aurora-1"></div>
+    <div class="cta-aurora-2"></div>
+  </div>
+  <div class="container">
+    <div class="cta-final-inner" data-aos="fade-up">
+      <span class="section-eyebrow">Élection DISE 2026-2027</span>
+      <h2 class="cta-final-title">Rejoignez le mouvement <span class="gold">La Relève</span></h2>
+      <p class="cta-final-sub">
+        Votez pour une DISE plus forte, plus unie, plus influente.<br>
+        Ensemble, construisons l'avenir de notre Céleste Division.
+      </p>
+      <div class="cta-final-actions">
+        <a href="{{ url_for('programme') }}" class="btn-primary btn-large">Notre programme</a>
+        <a href="{{ url_for('contact') }}" class="btn-ghost btn-large">Nous contacter</a>
+      </div>
+      <div class="cta-ensea-logos">
+        <span class="cta-logo-label">Candidats à l'élection DISE</span>
+        <div class="cta-logo-badges">
+          <span class="badge-logo">ENSEA</span>
+          <span class="badge-logo">AES</span>
+          <span class="badge-logo">ISE</span>
+          <span class="badge-logo">DISE</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

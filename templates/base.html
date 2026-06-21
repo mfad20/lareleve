@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+  <!-- Anti-flash loader : si déjà vu dans la session, on masque le loader
+       AVANT le premier rendu → aucune barre de chargement entre les pages -->
+  <script>
+    (function () {
+      try {
+        if (sessionStorage.getItem('loaderSeen')) {
+          document.documentElement.classList.add('loader-skip');
+        }
+      } catch (e) {}
+    })();
+  </script>
+
+  <!-- SEO -->
+  <title>{% block title %}LA RELÈVE — Héritiers d'exigence, bâtisseurs d'avenir{% endblock %}</title>
+  <meta name="description" content="{% block meta_desc %}La Relève, liste candidate à l'élection DISE 2026-2027 de l'ENSEA. Héritiers d'exigence, bâtisseurs d'avenir — une DISE unie, reconnue et influente.{% endblock %}" />
+  <meta name="keywords" content="La Relève, DISE, ENSEA, ISE, statisticien économiste, Abidjan, élection étudiante 2026" />
+  <meta name="author" content="La Relève — DISE ENSEA" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://lareleve-dise.com{{ request.path }}" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="LA RELÈVE" />
+  <meta property="og:title" content="{% block og_title %}LA RELÈVE — Héritiers d'exigence, bâtisseurs d'avenir{% endblock %}" />
+  <meta property="og:description" content="{% block og_desc %}La Relève, liste candidate à l'élection DISE 2026-2027 de l'ENSEA.{% endblock %}" />
+  <meta property="og:url" content="https://lareleve-dise.com{{ request.path }}" />
+  <meta property="og:locale" content="fr_CI" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="{% block tw_title %}LA RELÈVE — DISE ENSEA 2026{% endblock %}" />
+  <meta name="twitter:description" content="{% block tw_desc %}Héritiers d'exigence, bâtisseurs d'avenir.{% endblock %}" />
+
+  <!-- Favicon inline SVG -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%23071A52'/><text y='.9em' font-size='70' x='10'>R</text></svg>" />
+
+  <!-- DNS prefetch CDNs -->
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+  <link rel="dns-prefetch" href="https://unpkg.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+  <!-- Fonts: display=swap évite le texte invisible pendant le chargement -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- AOS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" />
+
+  <!-- Lucide Icons sizing -->
+  <style>
+    /* Loader masqué dès le 1er rendu si déjà vu cette session (zéro flash) */
+    html.loader-skip #loader { display: none !important; }
+    .pillar-icon svg,.pillar-icon-big svg,.valeur-icon svg,.inno-icon svg,
+    .itc-icon svg,.act-pill-icon svg,.prog-card-icon svg,.psc-icon svg,
+    .amb-icon svg,.ci-icon svg,.vn-card-icon svg,.vp-icon svg,
+    .chiffre-icon svg { width:1em;height:1em; }
+  </style>
+
+  <!-- Main CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}?v={{ assets_v }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/photos.css') }}?v={{ assets_v }}" />
+
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+
+  <!-- ════════════════════════════════════════
+       LOADER CINÉMATIQUE
+  ════════════════════════════════════════ -->
+  <div id="loader" aria-hidden="true">
+    <div class="loader-bg"></div>
+    <div class="loader-content">
+      <div class="loader-logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="La Relève" style="width:90px;height:90px;object-fit:contain;border-radius:12px;" />
+      </div>
+      <div class="loader-title">
+        <span class="loader-la">LA</span>
+        <span class="loader-releve"> RELÈVE</span>
+      </div>
+      <div class="loader-slogan">Héritiers d'exigence, bâtisseurs d'avenir</div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar"></div>
+      </div>
+      <div class="loader-percent">0%</div>
+    </div>
+    <div class="loader-particles" id="loaderParticles"></div>
+  </div>
+
+  <!-- ════════════════════════════════════════
+       THREE.JS CANVAS BACKGROUND
+  ════════════════════════════════════════ -->
+  <canvas id="three-canvas" aria-hidden="true"></canvas>
+
+  <!-- ════════════════════════════════════════
+       NAVIGATION
+  ════════════════════════════════════════ -->
+  <nav id="navbar" class="navbar" role="navigation" aria-label="Navigation principale">
+    <div class="nav-container">
+      <a href="{{ url_for('index') }}" class="nav-logo" aria-label="La Relève — Accueil">
+        <div class="nav-logo-icon">
+          <img src="{{ url_for('static', filename='images/logo.png') }}" alt="La Relève" class="nav-logo-img" />
+        </div>
+        <div class="nav-logo-text">
+          <span class="nav-logo-name">LA RELÈVE</span>
+          <span class="nav-logo-sub">DISE · ENSEA 2026</span>
+        </div>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Accueil</a></li>
+        <li><a href="{{ url_for('equipe') }}" class="nav-link {% if request.endpoint == 'equipe' %}active{% endif %}">Équipe</a></li>
+        <li><a href="{{ url_for('programme') }}" class="nav-link {% if request.endpoint == 'programme' %}active{% endif %}">Programme</a></li>
+        <li><a href="{{ url_for('vision') }}" class="nav-link {% if request.endpoint == 'vision' %}active{% endif %}">Vision</a></li>
+        <li><a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}">Contact</a></li>
+      </ul>
+
+      <a href="{{ url_for('contact') }}" class="nav-cta">Nous rejoindre</a>
+
+      <button class="nav-burger" id="navBurger" aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile menu -->
+    <div class="nav-mobile" id="navMobile" role="dialog" aria-modal="true" aria-label="Menu mobile">
+      <ul role="list">
+        <li><a href="{{ url_for('index') }}" class="nav-link {% if request.endpoint == 'index' %}active{% endif %}">Accueil</a></li>
+        <li><a href="{{ url_for('equipe') }}" class="nav-link {% if request.endpoint == 'equipe' %}active{% endif %}">Équipe</a></li>
+        <li><a href="{{ url_for('programme') }}" class="nav-link {% if request.endpoint == 'programme' %}active{% endif %}">Programme</a></li>
+        <li><a href="{{ url_for('vision') }}" class="nav-link {% if request.endpoint == 'vision' %}active{% endif %}">Vision</a></li>
+        <li><a href="{{ url_for('contact') }}" class="nav-link {% if request.endpoint == 'contact' %}active{% endif %}">Contact</a></li>
+        <li><a href="{{ url_for('contact') }}" class="btn-primary" style="display:block;text-align:center;margin-top:1rem;">Nous rejoindre</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ════════════════════════════════════════
+       MAIN CONTENT
+  ════════════════════════════════════════ -->
+  <main id="main-content">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- ════════════════════════════════════════
+       FOOTER
+  ════════════════════════════════════════ -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-aurora"></div>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="La Relève" style="height:42px;width:42px;object-fit:contain;border-radius:8px;" />
+            <span>LA RELÈVE</span>
+          </div>
+          <p class="footer-slogan">Héritiers d'exigence,<br>bâtisseurs d'avenir</p>
+          <p class="footer-desc">Candidats à l'élection DISE 2026-2027<br>ENSEA · Abidjan, Côte d'Ivoire</p>
+          <div style="display:flex;gap:0.75rem;margin-top:1.25rem;align-items:center;">
+            <img src="{{ url_for('static', filename='images/logo_ensea.png') }}" alt="ENSEA" style="height:28px;opacity:0.5;filter:brightness(0);" />
+            <img src="{{ url_for('static', filename='images/logo_aes.jpg') }}" alt="AES" style="height:28px;opacity:0.4;filter:brightness(0);" />
+          </div>
+        </div>
+
+        <div class="footer-nav">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="{{ url_for('index') }}">Accueil</a></li>
+            <li><a href="{{ url_for('equipe') }}">Équipe</a></li>
+            <li><a href="{{ url_for('programme') }}">Programme</a></li>
+            <li><a href="{{ url_for('vision') }}">Vision</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-programme">
+          <h4>Innovations Phares</h4>
+          <ul>
+            <li style="display:flex;align-items:center;gap:0.5rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              Site Web de la DISE
+            </li>
+            <li style="display:flex;align-items:center;gap:0.5rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              Mois de la Statisticienne
+            </li>
+            <li style="display:flex;align-items:center;gap:0.5rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              Podcast Expert Prêche
+            </li>
+            <li style="display:flex;align-items:center;gap:0.5rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="23" y1="11" x2="17" y2="11"/><line x1="20" y1="8" x2="20" y2="14"/></svg>
+              Journée de l'Expert
+            </li>
+            <li style="display:flex;align-items:center;gap:0.5rem;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#D4AF37" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              20 Ans de la Céleste
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-contact">
+          <h4>Contact</h4>
+          <p style="display:flex;align-items:center;gap:0.5rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            ENSEA · Abidjan, Côte d'Ivoire
+          </p>
+          <p style="display:flex;align-items:center;gap:0.5rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 2.18h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            +225 07 69 95 46 32
+          </p>
+          <p style="display:flex;align-items:center;gap:0.5rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            fadoul.biyen@ensea.edu.ci
+          </p>
+          <a href="{{ url_for('contact') }}" class="btn-primary footer-btn">Nous contacter</a>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 La Relève — DISE ENSEA. Tous droits réservés.</p>
+        <p class="footer-credit">Élection DISE 2026-2027 · <span class="gold">Héritiers d'exigence, bâtisseurs d'avenir</span></p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════════════
+       SCRIPTS CDN
+  ════════════════════════════════════════ -->
+  <!-- Lucide Icons (synchrone — petit, nécessaire immédiatement) -->
+  <script src="https://unpkg.com/lucide@0.447.0/dist/umd/lucide.min.js"></script>
+
+  <!-- Bibliothèques lourdes : defer = chargement parallèle, exécution après parse -->
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+
+  <!-- App Scripts (defer — dépendent des libs ci-dessus, ordre garanti) -->
+  <script defer src="{{ url_for('static', filename='js/three-bg.js') }}?v={{ assets_v }}"></script>
+  <script defer src="{{ url_for('static', filename='js/main.js') }}?v={{ assets_v }}"></script>
+
+  {% block extra_js %}{% endblock %}
+
+  <!-- Init Lucide (synchrone, lucide déjà chargé) -->
+  <script>lucide.createIcons();</script>
+
+  <!-- Hero carousel background auto-advance -->
+  <script>
+  (function() {
+    var slides = document.querySelectorAll('.hero-carousel-bg .carousel-slide');
+    if (!slides.length) return;
+    var current = 0;
+    setInterval(function() {
+      slides[current].classList.remove('active');
+      current = (current + 1) % slides.length;
+      slides[current].classList.add('active');
+    }, 4500);
+  })();
+  </script>
+</body>
+</html>
