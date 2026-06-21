@@ -12,38 +12,45 @@ const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 function lerp(a, b, t) { return a + (b - a) * t; }
 
 /* ════════════════════════════════════════════════════
-   1.  LOADER
+   1.  LOADER — une seule fois par session
    ════════════════════════════════════════════════════ */
 (function initLoader() {
-  const loader   = $('#loader');
+  const loader = $('#loader');
   if (!loader) return;
 
-  const bar      = $('.loader-bar');
-  const percent  = $('.loader-percent');
-  const logo     = $('.loader-logo');
-  const title    = $('.loader-title');
+  // Déjà vu dans cette session → masquer immédiatement, lancer le hero
+  if (sessionStorage.getItem('loaderSeen')) {
+    loader.style.display = 'none';
+    document.body.classList.remove('loading');
+    triggerHeroAnimation();
+    return;
+  }
+
+  const bar     = $('.loader-bar');
+  const percent = $('.loader-percent');
+  const logo    = $('.loader-logo');
+  const title   = $('.loader-title');
 
   let prog = 0;
   const TARGET = 100;
-  let raf;
 
   function step() {
     const remaining = TARGET - prog;
     prog += Math.max(0.4, remaining * 0.04);
     if (prog >= TARGET) prog = TARGET;
 
-    if (bar)     bar.style.width    = prog + '%';
+    if (bar)     bar.style.width     = prog + '%';
     if (percent) percent.textContent = Math.floor(prog) + '%';
 
     if (prog < TARGET) {
-      raf = requestAnimationFrame(step);
+      requestAnimationFrame(step);
     } else {
-      // Short pause then fade out
       setTimeout(dismissLoader, 350);
     }
   }
 
   function dismissLoader() {
+    sessionStorage.setItem('loaderSeen', '1');
     if (typeof gsap !== 'undefined') {
       gsap.to(loader, {
         opacity: 0,
@@ -66,19 +73,11 @@ function lerp(a, b, t) { return a + (b - a) * t; }
     }
   }
 
-  // Animate logo/title in
   if (typeof gsap !== 'undefined') {
-    gsap.fromTo(logo,
-      { opacity: 0, scale: 0.6 },
-      { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.4)' }
-    );
-    gsap.fromTo(title,
-      { opacity: 0, y: 12 },
-      { opacity: 1, y: 0, duration: 0.5, delay: 0.3, ease: 'power2.out' }
-    );
+    gsap.fromTo(logo,  { opacity: 0, scale: 0.6 }, { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.4)' });
+    gsap.fromTo(title, { opacity: 0, y: 12 },       { opacity: 1, y: 0,     duration: 0.5, delay: 0.3, ease: 'power2.out' });
   }
 
-  // Start progress after a brief moment
   setTimeout(() => requestAnimationFrame(step), 200);
 })();
 
