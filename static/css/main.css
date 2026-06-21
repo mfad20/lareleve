@@ -1,4 +1,4 @@
-/* ════════════════════════════════════════════════════════
+﻿/* ════════════════════════════════════════════════════════
    LA RELÈVE — Design System Premium
    DISE ENSEA 2026-2027
    Light Theme
@@ -481,6 +481,7 @@ section { position: relative; z-index: 1; }
   inset: 0;
   pointer-events: none;
   z-index: 0;
+  background: transparent;
 }
 
 .hero-carousel-bg-base {
@@ -489,6 +490,7 @@ section { position: relative; z-index: 1; }
   background-size: cover;
   background-position: center;
   opacity: 0.8;
+  background: transparent;
 }
 
 .carousel-slide {
@@ -671,6 +673,17 @@ section { position: relative; z-index: 1; }
 }
 
 .btn-hero { font-size: 0.95rem; padding: 0.85rem 1.8rem; }
+
+.btn-primary.btn-hero {
+  background: linear-gradient(135deg, var(--blue-electric) 0%, #1d4ed8 100%);
+  color: #ffffff;
+  box-shadow: 0 4px 20px rgba(59,130,246,0.30);
+}
+
+.btn-primary.btn-hero:hover {
+  background: linear-gradient(135deg, #60a5fa 0%, var(--blue-electric) 100%);
+  box-shadow: 0 8px 30px rgba(59,130,246,0.45);
+}
 
 .hero-meta {
   display: flex;
