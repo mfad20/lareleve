@@ -508,9 +508,9 @@ section { position: relative; z-index: 1; }
 
 .carousel-slide.active { opacity: 1; }
 
-/* Scrim de protection : fondu haut→bas sur les pages intérieures.
-   Apparaît dans la couche z-index:0 (hero-carousel-bg), au-dessus
-   des slides mais sous le contenu texte (z-index:1). */
+/* Scrim : transparent en haut (particules + photo visibles),
+   blanc progressif en bas (texte lisible). Valable hero accueil ET pages intérieures. */
+.hero .hero-carousel-bg::after,
 .page-hero .hero-carousel-bg::after {
   content: '';
   position: absolute;
@@ -518,29 +518,11 @@ section { position: relative; z-index: 1; }
   z-index: 1;
   pointer-events: none;
   background: linear-gradient(
-    180deg,
-    rgba(248,250,252,0.95) 0%,
-    rgba(239,246,255,0.82) 38%,
-    rgba(239,246,255,0.42) 65%,
-    transparent 100%
-  );
-}
-
-/* Scrim hero d'accueil : protège le haut (titre desktop) et le bas (contenu).
-   Sur mobile, un override dans @media remplace par un dégradé uniquement bas. */
-.hero .hero-carousel-bg::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background: linear-gradient(
     to bottom,
-    rgba(248,250,252,0.92) 0%,
-    rgba(248,250,252,0.45) 18%,
-    transparent 40%,
-    rgba(248,250,252,0.48) 62%,
-    rgba(248,250,252,0.88) 82%,
+    transparent 0%,
+    transparent 32%,
+    rgba(248,250,252,0.42) 55%,
+    rgba(248,250,252,0.88) 78%,
     rgba(248,250,252,0.97) 100%
   );
 }
@@ -619,6 +601,7 @@ section { position: relative; z-index: 1; }
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-end;
   flex: 1;
   width: 100%;
 }
@@ -685,7 +668,6 @@ section { position: relative; z-index: 1; }
   font-size: clamp(1rem, 2.5vw, 1.5rem);
   font-style: italic;
   color: var(--gold);
-  margin-top: auto;
   margin-bottom: 1.5rem;
   opacity: 0;
   white-space: nowrap;
@@ -1349,12 +1331,12 @@ section { position: relative; z-index: 1; }
 .page-hero {
   min-height: 100vh;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: calc(var(--nav-h) + 4rem) 0 6rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--nav-h) 0 5rem;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(160deg, #f8fafc 0%, #eff6ff 50%, #f0f9ff 100%);
+  background: transparent;
   border-bottom: 1px solid rgba(59,130,246,0.10);
 }
 
@@ -2836,26 +2818,17 @@ section { position: relative; z-index: 1; }
   .hero-la { font-size: clamp(2.5rem, 10vw, 4rem); }
   .hero-releve { font-size: clamp(3.5rem, 16vw, 7rem); }
 
-  /* Sur mobile, on groupe tout en bas via justify-content:flex-end sur le container.
-     margin-top:0 annule le margin-top:auto du mode desktop (qui laisserait le titre en haut). */
-  .hero-container {
-    justify-content: flex-end;
-  }
+  .hero-slogan { white-space: normal; }
 
-  .hero-slogan {
-    margin-top: 0;
-    white-space: normal;
-  }
-
-  /* Scrim mobile : transparent en haut (photo visible), blanc en bas (texte lisible).
-     Override du dual-gradient desktop qui protégeait aussi le haut pour le titre. */
-  .hero .hero-carousel-bg::after {
+  /* Fine-tune scrim mobile : début du dégradé légèrement plus tôt qu'en desktop */
+  .hero .hero-carousel-bg::after,
+  .page-hero .hero-carousel-bg::after {
     background: linear-gradient(
       to bottom,
       transparent 0%,
-      transparent 25%,
-      rgba(248,250,252,0.48) 52%,
-      rgba(248,250,252,0.88) 75%,
+      transparent 22%,
+      rgba(248,250,252,0.42) 48%,
+      rgba(248,250,252,0.88) 72%,
       rgba(248,250,252,0.96) 100%
     );
   }
@@ -2870,7 +2843,7 @@ section { position: relative; z-index: 1; }
 
   .hero-scroll-hint { margin-top: 1rem; }
 
-  .page-hero { padding: calc(var(--nav-h) + 2rem) 0 4rem; }
+  .page-hero { padding: var(--nav-h) 0 3.5rem; }
 
   .hero-meta { flex-wrap: wrap; gap: 1rem; }
   .hero-meta-divider { display: none; }
