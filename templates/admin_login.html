@@ -4,17 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin — La Relève</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: #0f172a;
-      color: #f8fafc;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    body { display: flex; align-items: center; justify-content: center; }
     .card {
       background: #1e293b;
       border: 1px solid rgba(212,175,55,0.2);
@@ -54,15 +46,6 @@
       transition: background 0.2s;
     }
     button:hover { background: #e6c54e; }
-    .alert {
-      background: rgba(239,68,68,0.15);
-      border: 1px solid rgba(239,68,68,0.3);
-      color: #fca5a5;
-      border-radius: 8px;
-      padding: 0.65rem 1rem;
-      font-size: 0.85rem;
-      margin-bottom: 1rem;
-    }
   </style>
 </head>
 <body>

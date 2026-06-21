@@ -6,7 +6,10 @@ from datetime import datetime
 import re
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'lareleve-dise-2026-secret-key-ultra-secure')
+_secret_key = os.environ.get('SECRET_KEY')
+if not _secret_key:
+    raise ValueError("SECRET_KEY environment variable must be set")
+app.config['SECRET_KEY'] = _secret_key
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lareleve.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 86400  # 24h cache navigateur
@@ -244,7 +247,9 @@ VALEURS = [
 # ADMIN AUTH
 # ──────────────────────────────────────────────
 
-ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD', 'lareleve2026')
+ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD')
+if not ADMIN_PASSWORD:
+    raise ValueError("ADMIN_PASSWORD environment variable must be set")
 
 def admin_required(f):
     @wraps(f)
@@ -339,8 +344,9 @@ def contact():
     return render_template('contact.html')
 
 @app.route('/admin')
+@admin_required
 def admin():
-    return redirect(url_for('admin_login'))
+    return redirect(url_for('admin_messages'))
 
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
@@ -355,7 +361,7 @@ def admin_login():
 @admin_required
 def admin_messages():
     messages = Contact.query.order_by(Contact.date_envoi.desc()).all()
-    non_lus = Contact.query.filter_by(lu=False).count()
+    non_lus = sum(1 for m in messages if not m.lu)
     return render_template('admin_messages.html', messages=messages, non_lus=non_lus)
 
 @app.route('/admin/marquer-lu/<int:id>', methods=['POST'])
