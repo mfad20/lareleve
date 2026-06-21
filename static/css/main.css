@@ -487,6 +487,23 @@ section { position: relative; z-index: 1; }
   background: transparent;
 }
 
+/* Couche blanche en bas pour que mix-blend-mode:multiply fonctionne sur la photo
+   (fond blanc = bg photo disparaît, équipe reste visible).
+   Transparent en haut = particules Three.js visibles au-dessus de la photo. */
+.hero-carousel-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 25%,
+    rgba(248,250,252,0.88) 55%,
+    rgba(248,250,252,0.96) 100%
+  );
+}
+
 .hero-carousel-bg-base {
   position: absolute;
   inset: 0;
@@ -571,6 +588,10 @@ section { position: relative; z-index: 1; }
   33%       { transform: translate(3%, 5%) scale(1.05); }
   66%       { transform: translate(-3%, -3%) scale(0.97); }
 }
+
+/* Sur page-hero les blobs aurora teignent la photo en bleu via mix-blend-mode.
+   Les particules Three.js assurent l'ambiance — on cache l'aurora. */
+.page-hero .page-aurora { display: none; }
 
 /* ─── HERO (transparent — particles Three.js en fond) ────── */
 .hero {
