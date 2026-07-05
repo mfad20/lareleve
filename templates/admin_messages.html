@@ -154,11 +154,19 @@
   async function testEmail() {
     const btn = document.getElementById('testEmailBtn');
     btn.disabled = true; btn.textContent = '⏳ Envoi…';
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 25000);
     try {
-      const r = await fetch('{{ url_for("admin_test_email") }}');
+      const r = await fetch('{{ url_for("admin_test_email") }}', { signal: ctrl.signal });
+      clearTimeout(tid);
       const d = await r.json();
-      alert(d.ok ? '✅ ' + d.detail : '❌ ' + d.detail);
-    } catch { alert('❌ Erreur réseau.'); }
+      alert(d.ok ? '✅ ' + d.detail : '❌ Erreur : ' + d.detail);
+    } catch(e) {
+      clearTimeout(tid);
+      alert(e.name === 'AbortError'
+        ? '❌ Timeout : le serveur ne répond pas (SMTP bloqué ou credentials invalides)'
+        : '❌ Erreur réseau : ' + e.message);
+    }
     finally { btn.disabled = false; btn.textContent = '✉ Tester email'; }
   }
   </script>

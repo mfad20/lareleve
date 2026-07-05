@@ -1,4 +1,5 @@
 import os
+import socket
 import threading
 from functools import wraps, lru_cache
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
@@ -306,6 +307,8 @@ def _send_contact_email_inner(nom, email, telephone, message):
     if not username or not password:
         app.logger.warning('Email non envoyé : MAIL_USERNAME ou MAIL_PASSWORD manquant.')
         return False
+    old_timeout = socket.getdefaulttimeout()
+    socket.setdefaulttimeout(15)   # 15s max pour la connexion SMTP
     try:
         tel_row = (
             f'<tr><td style="padding:6px 12px;color:#888;white-space:nowrap">Téléphone</td>'
@@ -350,6 +353,8 @@ def _send_contact_email_inner(nom, email, telephone, message):
     except Exception as e:
         app.logger.error(f'Échec envoi email : {e}')
         return False
+    finally:
+        socket.setdefaulttimeout(old_timeout)
 
 # ──────────────────────────────────────────────
 # ADMIN AUTH
