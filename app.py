@@ -2,6 +2,7 @@ import os
 from functools import wraps
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail, Message
 from datetime import datetime
 import re
 
@@ -14,7 +15,15 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lareleve.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 86400  # 24h cache navigateur
 
-db = SQLAlchemy(app)
+# ── Flask-Mail (Gmail SMTP) ──────────────────────────────
+app.config['MAIL_SERVER']   = 'smtp.gmail.com'
+app.config['MAIL_PORT']     = 587
+app.config['MAIL_USE_TLS']  = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+
+db   = SQLAlchemy(app)
+mail = Mail(app)
 
 # ──────────────────────────────────────────────
 # CACHE-BUSTING : version des assets (mtime des fichiers statiques).
@@ -268,6 +277,33 @@ VALEURS = [
 ]
 
 # ──────────────────────────────────────────────
+# EMAIL
+# ──────────────────────────────────────────────
+
+MAIL_RECIPIENT = os.environ.get('MAIL_RECIPIENT', 'mfad09012002@gmail.com')
+
+def _send_contact_email(nom, email, telephone, message):
+    if not app.config.get('MAIL_USERNAME') or not app.config.get('MAIL_PASSWORD'):
+        return
+    try:
+        tel_line = f"Téléphone : {telephone}\n" if telephone else ""
+        msg = Message(
+            subject=f"[La Relève] Nouveau message de {nom}",
+            sender=app.config['MAIL_USERNAME'],
+            recipients=[MAIL_RECIPIENT],
+            reply_to=email,
+            body=(
+                f"Nom     : {nom}\n"
+                f"Email   : {email}\n"
+                f"{tel_line}"
+                f"\nMessage :\n{message}\n"
+            )
+        )
+        mail.send(msg)
+    except Exception:
+        pass  # ne bloque pas la sauvegarde si l'email échoue
+
+# ──────────────────────────────────────────────
 # ADMIN AUTH
 # ──────────────────────────────────────────────
 
@@ -349,6 +385,9 @@ def contact():
             )
             db.session.add(nouveau_contact)
             db.session.commit()
+
+            # Send email notification if mail is configured
+            _send_contact_email(nom, email, telephone, message)
 
             if request.is_json:
                 return jsonify({
