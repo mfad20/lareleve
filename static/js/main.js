@@ -121,9 +121,9 @@ function triggerHeroAnimation() {
   );
 
   // CTA buttons
-  tl.fromTo('.hero-actions .btn',
-    { opacity: 0, y: 20, scale: 0.92 },
-    { opacity: 1, y: 0, scale: 1, duration: 0.5, stagger: 0.12 }, 0.9
+  tl.fromTo('.hero-actions',
+    { opacity: 0, y: 20 },
+    { opacity: 1, y: 0, duration: 0.5 }, 0.9
   );
 
   // Meta stats

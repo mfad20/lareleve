@@ -198,7 +198,6 @@ input, textarea { font-family: inherit; }
   top: 0; left: 0; right: 0;
   z-index: 1000;
   height: var(--nav-h);
-  transition: var(--transition);
 }
 
 .navbar.scrolled {
@@ -482,7 +481,7 @@ section { position: relative; z-index: 1; }
 .hero-carousel-bg {
   position: absolute;
   top: 0; left: 0; right: 0;
-  height: 60%;            /* image en haut ; le bas du hero reste libre pour le texte */
+  height: 72%;
   bottom: auto;
   pointer-events: none;
   z-index: 0;
@@ -505,7 +504,7 @@ section { position: relative; z-index: 1; }
 .carousel-slide {
   position: absolute;
   inset: 0;
-  background-size: contain;
+  background-size: auto 100%;
   background-repeat: no-repeat;
   background-position: center top;
   opacity: 0;
@@ -727,7 +726,6 @@ section { position: relative; z-index: 1; }
   gap: 1rem;
   flex-wrap: wrap;
   margin-bottom: 3rem;
-  opacity: 0;
 }
 
 .btn-hero { font-size: 0.95rem; padding: 0.85rem 1.8rem; }
@@ -747,7 +745,6 @@ section { position: relative; z-index: 1; }
   display: flex;
   align-items: center;
   gap: 0;
-  opacity: 0;
 }
 
 .hero-meta-item {
@@ -1202,6 +1199,21 @@ section { position: relative; z-index: 1; }
   font-size: 1.2rem;
   font-weight: 700;
   position: relative;
+}
+
+.tcp-photo-wrap {
+  width: 70px; height: 70px;
+  border-radius: 50%;
+  border: 2px solid;
+  overflow: hidden;
+  margin: 0 auto 0.5rem;
+  flex-shrink: 0;
+}
+
+.tcp-photo-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .tcp-flag { font-size: 1.2rem; margin-bottom: 0.75rem; }
@@ -2855,19 +2867,6 @@ section { position: relative; z-index: 1; }
   .hero-releve { font-size: clamp(2.8rem, 14vw, 5.5rem); }
   .hero-title { margin-bottom: 0.75rem; }
   .hero-slogan { margin-bottom: 0.75rem; white-space: normal; }
-
-  /* Scrim mobile : zone texte basse bien nette (anti-flou), image visible au-dessus */
-  .hero .hero-carousel-bg::after,
-  .page-hero .hero-carousel-bg::after {
-    background: linear-gradient(
-      to bottom,
-      transparent 0%,
-      transparent 44%,
-      rgba(248,250,252,0.62) 58%,
-      rgba(248,250,252,0.94) 78%,
-      rgba(248,250,252,0.99) 100%
-    );
-  }
 
   .hero-sub {
     text-align: left;
