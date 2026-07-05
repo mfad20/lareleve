@@ -248,11 +248,16 @@ form.addEventListener('submit', async (e) => {
       message: document.getElementById('message').value.trim()
     };
 
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 20000);
+
     const res = await fetch('/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
+      signal: controller.signal
     });
+    clearTimeout(timeout);
     const data = await res.json();
 
     if (data.success) {
@@ -268,7 +273,10 @@ form.addEventListener('submit', async (e) => {
       formError.style.display = 'flex';
     }
   } catch (err) {
-    formErrorMsg.textContent = 'Erreur de connexion. Vérifiez votre réseau et réessayez.';
+    const msg = err.name === 'AbortError'
+      ? 'Délai dépassé. Le serveur met du temps à répondre, réessayez dans quelques secondes.'
+      : 'Erreur de connexion. Vérifiez votre réseau et réessayez.';
+    formErrorMsg.textContent = msg;
     formError.style.display = 'flex';
   } finally {
     submitText.textContent = 'Envoyer le message';

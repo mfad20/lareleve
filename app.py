@@ -346,18 +346,17 @@ def vision():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
     if request.method == 'POST':
-        # Handle AJAX submission
         if request.is_json:
-            data = request.get_json()
-            nom = data.get('nom', '').strip()
-            email = data.get('email', '').strip()
+            data = request.get_json(silent=True) or {}
+            nom       = data.get('nom', '').strip()
+            email     = data.get('email', '').strip()
             telephone = data.get('telephone', '').strip()
-            message = data.get('message', '').strip()
+            message   = data.get('message', '').strip()
         else:
-            nom = request.form.get('nom', '').strip()
-            email = request.form.get('email', '').strip()
+            nom       = request.form.get('nom', '').strip()
+            email     = request.form.get('email', '').strip()
             telephone = request.form.get('telephone', '').strip()
-            message = request.form.get('message', '').strip()
+            message   = request.form.get('message', '').strip()
 
         # Validation
         errors = []
