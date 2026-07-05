@@ -362,8 +362,8 @@ function initScrollTrigger() {
    8.  PROGRAMME TABS
    ════════════════════════════════════════════════════ */
 (function initTabs() {
-  const tabs    = $$('.tab-btn');
-  const panels  = $$('.tab-panel');
+  const tabs    = $$('.prog-tab');
+  const panels  = $$('.prog-panel');
   if (!tabs.length) return;
 
   function activateTab(btn) {
@@ -376,7 +376,6 @@ function initScrollTrigger() {
       p.setAttribute('aria-hidden', !active);
     });
 
-    // Re-trigger AOS for newly visible items
     if (typeof AOS !== 'undefined') AOS.refresh();
   }
 
@@ -384,11 +383,10 @@ function initScrollTrigger() {
     btn.addEventListener('click', () => activateTab(btn));
   });
 
-  // Keyboard navigation
   const tabGroup = tabs[0]?.closest('[role="tablist"]');
   if (tabGroup) {
     tabGroup.addEventListener('keydown', (e) => {
-      const current = $$('.tab-btn.active', tabGroup)[0];
+      const current = $$('.prog-tab.active', tabGroup)[0];
       const idx     = tabs.indexOf(current);
 
       if (e.key === 'ArrowRight' && idx < tabs.length - 1) {
@@ -542,31 +540,10 @@ function initScrollTrigger() {
 
 
 /* ════════════════════════════════════════════════════
-   11. PARALLAX (hero bg / subtle depth)
-   ════════════════════════════════════════════════════ */
-(function initParallax() {
-  const heroSection = $('.hero-section, #hero');
-  if (!heroSection) return;
-
-  let ticking = false;
-
-  window.addEventListener('scroll', () => {
-    if (ticking) return;
-    requestAnimationFrame(() => {
-      const y = window.scrollY * 0.25;
-      heroSection.style.backgroundPositionY = `-${y}px`;
-      ticking = false;
-    });
-    ticking = true;
-  }, { passive: true });
-})();
-
-
-/* ════════════════════════════════════════════════════
-   12. MARQUEE — pause on hover
+   11. MARQUEE — pause on hover
    ════════════════════════════════════════════════════ */
 (function initMarquee() {
-  $$('.marquee-track, .activities-track').forEach((track) => {
+  $$('.marquee-track, .activites-track').forEach((track) => {
     track.addEventListener('mouseenter', () => {
       track.style.animationPlayState = 'paused';
     });

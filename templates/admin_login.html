@@ -63,6 +63,7 @@
     {% endwith %}
 
     <form method="POST">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
       <label for="password">Mot de passe</label>
       <input type="password" id="password" name="password" placeholder="••••••••" autofocus required>
       <button type="submit">Connexion</button>

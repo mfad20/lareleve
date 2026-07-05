@@ -1,8 +1,11 @@
 import os
-from functools import wraps
+from functools import wraps, lru_cache
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from flask_mail import Mail, Message
+from flask_wtf.csrf import CSRFProtect
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 from datetime import datetime
 import re
 
@@ -11,7 +14,11 @@ _secret_key = os.environ.get('SECRET_KEY')
 if not _secret_key:
     raise ValueError("SECRET_KEY environment variable must be set")
 app.config['SECRET_KEY'] = _secret_key
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lareleve.db'
+_db_url = os.environ.get('DATABASE_URL', 'sqlite:///lareleve.db')
+# Render fournit postgres:// mais SQLAlchemy 2.x requiert postgresql://
+if _db_url.startswith('postgres://'):
+    _db_url = _db_url.replace('postgres://', 'postgresql://', 1)
+app.config['SQLALCHEMY_DATABASE_URI'] = _db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 86400  # 24h cache navigateur
 
@@ -23,8 +30,10 @@ app.config['MAIL_USERNAME']       = os.environ.get('MAIL_USERNAME')
 app.config['MAIL_PASSWORD']       = os.environ.get('MAIL_PASSWORD')
 app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
 
-db   = SQLAlchemy(app)
-mail = Mail(app)
+db      = SQLAlchemy(app)
+mail    = Mail(app)
+csrf    = CSRFProtect(app)
+limiter = Limiter(app=app, key_func=get_remote_address, default_limits=[])
 
 # ──────────────────────────────────────────────
 # CACHE-BUSTING : version des assets (mtime des fichiers statiques).
@@ -32,6 +41,7 @@ mail = Mail(app)
 # ──────────────────────────────────────────────
 import time
 
+@lru_cache(maxsize=1)
 def _assets_version():
     paths = [
         'static/css/main.css', 'static/css/photos.css',
@@ -348,6 +358,7 @@ def vision():
     return render_template('vision.html')
 
 @app.route('/contact', methods=['GET', 'POST'])
+@csrf.exempt
 def contact():
     if request.method == 'POST':
         if request.is_json:
@@ -415,6 +426,7 @@ def admin():
     return redirect(url_for('admin_messages'))
 
 @app.route('/admin/login', methods=['GET', 'POST'])
+@limiter.limit("5 per minute")
 def admin_login():
     if request.method == 'POST':
         if request.form.get('password', '') == ADMIN_PASSWORD:
@@ -433,7 +445,7 @@ def admin_messages():
 @app.route('/admin/marquer-lu/<int:id>', methods=['POST'])
 @admin_required
 def admin_marquer_lu(id):
-    msg = Contact.query.get_or_404(id)
+    msg = db.get_or_404(Contact, id)
     msg.lu = not msg.lu
     db.session.commit()
     return redirect(url_for('admin_messages'))
@@ -441,12 +453,12 @@ def admin_marquer_lu(id):
 @app.route('/admin/supprimer/<int:id>', methods=['POST'])
 @admin_required
 def admin_supprimer(id):
-    msg = Contact.query.get_or_404(id)
+    msg = db.get_or_404(Contact, id)
     db.session.delete(msg)
     db.session.commit()
     return redirect(url_for('admin_messages'))
 
-@app.route('/admin/logout')
+@app.route('/admin/logout', methods=['POST'])
 def admin_logout():
     session.pop('admin_logged_in', None)
     return redirect(url_for('admin_login'))

@@ -137,7 +137,10 @@
       <span class="badge-count">{{ non_lus }} non lu{{ 's' if non_lus > 1 }}</span>
     {% endif %}
   </div>
-  <a href="{{ url_for('admin_logout') }}" class="btn-logout">Déconnexion</a>
+  <form method="POST" action="{{ url_for('admin_logout') }}" style="display:inline;">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn-logout">Déconnexion</button>
+  </form>
 </div>
 
 <div class="content">
@@ -188,12 +191,14 @@
 
         <div class="msg-actions">
           <form method="POST" action="{{ url_for('admin_marquer_lu', id=msg.id) }}" style="display:inline;">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn-sm btn-lu">
               {{ 'Marquer non lu' if msg.lu else 'Marquer lu' }}
             </button>
           </form>
           <form method="POST" action="{{ url_for('admin_supprimer', id=msg.id) }}" style="display:inline;"
                 onsubmit="return confirm('Supprimer ce message ?');">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <button type="submit" class="btn-sm btn-del">Supprimer</button>
           </form>
         </div>
