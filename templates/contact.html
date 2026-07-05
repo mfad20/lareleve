@@ -258,7 +258,13 @@ form.addEventListener('submit', async (e) => {
       signal: controller.signal
     });
     clearTimeout(timeout);
-    const data = await res.json();
+
+    let data;
+    try {
+      data = await res.json();
+    } catch {
+      throw new Error('Réponse invalide du serveur. Réessayez dans quelques secondes.');
+    }
 
     if (data.success) {
       formSuccess.style.display = 'flex';
@@ -275,7 +281,7 @@ form.addEventListener('submit', async (e) => {
   } catch (err) {
     const msg = err.name === 'AbortError'
       ? 'Délai dépassé. Le serveur met du temps à répondre, réessayez dans quelques secondes.'
-      : 'Erreur de connexion. Vérifiez votre réseau et réessayez.';
+      : (err.message || 'Erreur de connexion. Vérifiez votre réseau et réessayez.');
     formErrorMsg.textContent = msg;
     formError.style.display = 'flex';
   } finally {

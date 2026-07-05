@@ -294,28 +294,56 @@ VALEURS = [
 MAIL_RECIPIENT = os.environ.get('MAIL_RECIPIENT', 'mfad09012002@gmail.com')
 
 def _send_contact_email(nom, email, telephone, message):
+    """Envoie une notification email à l'admin. Retourne True si succès, False sinon."""
     username = app.config.get('MAIL_USERNAME')
     password = app.config.get('MAIL_PASSWORD')
     if not username or not password:
         app.logger.warning('Email non envoyé : MAIL_USERNAME ou MAIL_PASSWORD manquant.')
-        return
+        return False
     try:
-        tel_line = f"Téléphone : {telephone}\n" if telephone else ""
+        tel_row = (
+            f'<tr><td style="padding:6px 12px;color:#888;white-space:nowrap">Téléphone</td>'
+            f'<td style="padding:6px 12px">{telephone}</td></tr>'
+        ) if telephone else ''
+        html_body = f"""
+<html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#f8f9fc">
+  <div style="background:#1e293b;border-radius:12px;padding:24px">
+    <h2 style="color:#D4AF37;margin:0 0 16px">📬 Nouveau message — La Relève</h2>
+    <table style="width:100%;border-collapse:collapse;background:#0f172a;border-radius:8px;overflow:hidden">
+      <tr><td style="padding:6px 12px;color:#888;white-space:nowrap">Nom</td>
+          <td style="padding:6px 12px;color:#f1f5f9;font-weight:bold">{nom}</td></tr>
+      <tr style="background:#1e293b"><td style="padding:6px 12px;color:#888;white-space:nowrap">Email</td>
+          <td style="padding:6px 12px"><a href="mailto:{email}" style="color:#3B82F6">{email}</a></td></tr>
+      {tel_row}
+    </table>
+    <div style="margin-top:16px;background:#0f172a;border-radius:8px;padding:16px">
+      <p style="color:#94a3b8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px">Message</p>
+      <p style="color:#e2e8f0;margin:0;white-space:pre-wrap;line-height:1.6">{message}</p>
+    </div>
+    <p style="color:#475569;font-size:12px;margin-top:16px">
+      Répondez directement à cet email pour contacter {nom}.
+    </p>
+  </div>
+</body></html>"""
+        text_body = (
+            f"Nom     : {nom}\n"
+            f"Email   : {email}\n"
+            + (f"Tél.    : {telephone}\n" if telephone else "")
+            + f"\nMessage :\n{message}\n"
+        )
         msg = Message(
             subject=f"[La Relève] Nouveau message de {nom}",
             recipients=[MAIL_RECIPIENT],
             reply_to=email,
-            body=(
-                f"Nom     : {nom}\n"
-                f"Email   : {email}\n"
-                f"{tel_line}"
-                f"\nMessage :\n{message}\n"
-            )
+            body=text_body,
+            html=html_body,
         )
         mail.send(msg)
-        app.logger.info(f'Email envoyé depuis {email}.')
+        app.logger.info(f'Email envoyé depuis {email} → {MAIL_RECIPIENT}.')
+        return True
     except Exception as e:
         app.logger.error(f'Échec envoi email : {e}')
+        return False
 
 # ──────────────────────────────────────────────
 # ADMIN AUTH
@@ -359,6 +387,7 @@ def vision():
 
 @app.route('/contact', methods=['GET', 'POST'])
 @csrf.exempt
+@limiter.limit("5 per hour", methods=["POST"])
 def contact():
     if request.method == 'POST':
         if request.is_json:
@@ -420,6 +449,10 @@ def contact():
 
     return render_template('contact.html')
 
+@app.errorhandler(429)
+def too_many_requests(e):
+    return jsonify({"success": False, "errors": ["Trop de messages envoyés. Réessayez dans une heure."]}), 429
+
 @app.route('/admin')
 @admin_required
 def admin():
@@ -457,6 +490,30 @@ def admin_supprimer(id):
     db.session.delete(msg)
     db.session.commit()
     return redirect(url_for('admin_messages'))
+
+@app.route('/admin/test-email')
+@admin_required
+def admin_test_email():
+    """Route de diagnostic : envoie un email de test à MAIL_RECIPIENT."""
+    username = app.config.get('MAIL_USERNAME')
+    password = app.config.get('MAIL_PASSWORD')
+    if not username or not password:
+        return jsonify({'ok': False, 'detail': 'MAIL_USERNAME ou MAIL_PASSWORD non configuré dans les variables d\'environnement.'})
+    try:
+        msg = Message(
+            subject="[La Relève] ✅ Test email — configuration OK",
+            recipients=[MAIL_RECIPIENT],
+            body=(
+                f"Ceci est un email de test envoyé depuis La Relève.\n\n"
+                f"Expéditeur : {username}\n"
+                f"Destinataire : {MAIL_RECIPIENT}\n\n"
+                "Si vous recevez cet email, la configuration Gmail fonctionne correctement."
+            ),
+        )
+        mail.send(msg)
+        return jsonify({'ok': True, 'detail': f'Email de test envoyé à {MAIL_RECIPIENT}.'})
+    except Exception as e:
+        return jsonify({'ok': False, 'detail': str(e)})
 
 @app.route('/admin/logout', methods=['POST'])
 def admin_logout():

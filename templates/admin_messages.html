@@ -137,10 +137,31 @@
       <span class="badge-count">{{ non_lus }} non lu{{ 's' if non_lus > 1 }}</span>
     {% endif %}
   </div>
-  <form method="POST" action="{{ url_for('admin_logout') }}" style="display:inline;">
-    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
-    <button type="submit" class="btn-logout">Déconnexion</button>
-  </form>
+  <div style="display:flex;gap:.5rem;align-items:center">
+    <button id="testEmailBtn" onclick="testEmail()" style="
+      background:rgba(59,130,246,.12);border:1px solid rgba(59,130,246,.3);
+      color:#93c5fd;padding:.45rem 1rem;border-radius:8px;font-size:.82rem;
+      font-weight:600;cursor:pointer;transition:background .2s"
+      title="Envoyer un email de test pour vérifier la configuration Gmail">
+      ✉ Tester email
+    </button>
+    <form method="POST" action="{{ url_for('admin_logout') }}" style="display:inline;">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn-logout">Déconnexion</button>
+    </form>
+  </div>
+  <script>
+  async function testEmail() {
+    const btn = document.getElementById('testEmailBtn');
+    btn.disabled = true; btn.textContent = '⏳ Envoi…';
+    try {
+      const r = await fetch('{{ url_for("admin_test_email") }}');
+      const d = await r.json();
+      alert(d.ok ? '✅ ' + d.detail : '❌ ' + d.detail);
+    } catch { alert('❌ Erreur réseau.'); }
+    finally { btn.disabled = false; btn.textContent = '✉ Tester email'; }
+  }
+  </script>
 </div>
 
 <div class="content">
