@@ -1,15 +1,14 @@
 import os
-import socket
 import threading
 from functools import wraps, lru_cache
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
-from flask_mail import Mail, Message
 from flask_wtf.csrf import CSRFProtect
 from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from datetime import datetime
 import re
+import resend
 
 app = Flask(__name__)
 _secret_key = os.environ.get('SECRET_KEY')
@@ -24,16 +23,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = _db_url
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 86400  # 24h cache navigateur
 
-# ── Flask-Mail (Gmail SMTP) ──────────────────────────────
-app.config['MAIL_SERVER']         = 'smtp.gmail.com'
-app.config['MAIL_PORT']           = 587
-app.config['MAIL_USE_TLS']        = True
-app.config['MAIL_USERNAME']       = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD']       = os.environ.get('MAIL_PASSWORD')
-app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
-
 db      = SQLAlchemy(app)
-mail    = Mail(app)
 csrf    = CSRFProtect(app)
 limiter = Limiter(app=app, key_func=get_remote_address, default_limits=[])
 
@@ -294,67 +284,55 @@ VALEURS = [
 # ──────────────────────────────────────────────
 
 MAIL_RECIPIENT = os.environ.get('MAIL_RECIPIENT', 'mfad09012002@gmail.com')
+RESEND_API_KEY = os.environ.get('RESEND_API_KEY')
+MAIL_FROM      = os.environ.get('MAIL_FROM', 'La Relève <onboarding@resend.dev>')
 
 def _send_contact_email(nom, email, telephone, message):
-    """Envoie une notification email à l'admin (appelé depuis un thread daemon)."""
+    """Envoie via Resend (HTTP) dans un thread daemon — ne bloque pas la réponse HTTP."""
     with app.app_context():
         return _send_contact_email_inner(nom, email, telephone, message)
 
 def _send_contact_email_inner(nom, email, telephone, message):
-    """Logique d'envoi — doit être appelé avec un app_context actif."""
-    username = app.config.get('MAIL_USERNAME')
-    password = app.config.get('MAIL_PASSWORD')
-    if not username or not password:
-        app.logger.warning('Email non envoyé : MAIL_USERNAME ou MAIL_PASSWORD manquant.')
+    if not RESEND_API_KEY:
+        app.logger.warning('Email non envoyé : RESEND_API_KEY manquant.')
         return False
-    old_timeout = socket.getdefaulttimeout()
-    socket.setdefaulttimeout(15)   # 15s max pour la connexion SMTP
     try:
+        resend.api_key = RESEND_API_KEY
         tel_row = (
-            f'<tr><td style="padding:6px 12px;color:#888;white-space:nowrap">Téléphone</td>'
+            f'<tr><td style="padding:6px 12px;color:#888">Téléphone</td>'
             f'<td style="padding:6px 12px">{telephone}</td></tr>'
         ) if telephone else ''
         html_body = f"""
 <html><body style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#f8f9fc">
   <div style="background:#1e293b;border-radius:12px;padding:24px">
-    <h2 style="color:#D4AF37;margin:0 0 16px">📬 Nouveau message — La Relève</h2>
+    <h2 style="color:#D4AF37;margin:0 0 16px">Nouveau message — La Relève</h2>
     <table style="width:100%;border-collapse:collapse;background:#0f172a;border-radius:8px;overflow:hidden">
-      <tr><td style="padding:6px 12px;color:#888;white-space:nowrap">Nom</td>
+      <tr><td style="padding:6px 12px;color:#888">Nom</td>
           <td style="padding:6px 12px;color:#f1f5f9;font-weight:bold">{nom}</td></tr>
-      <tr style="background:#1e293b"><td style="padding:6px 12px;color:#888;white-space:nowrap">Email</td>
+      <tr style="background:#1e293b"><td style="padding:6px 12px;color:#888">Email</td>
           <td style="padding:6px 12px"><a href="mailto:{email}" style="color:#3B82F6">{email}</a></td></tr>
       {tel_row}
     </table>
     <div style="margin-top:16px;background:#0f172a;border-radius:8px;padding:16px">
-      <p style="color:#94a3b8;margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:1px">Message</p>
+      <p style="color:#94a3b8;margin:0 0 8px;font-size:12px">MESSAGE</p>
       <p style="color:#e2e8f0;margin:0;white-space:pre-wrap;line-height:1.6">{message}</p>
     </div>
-    <p style="color:#475569;font-size:12px;margin-top:16px">
-      Répondez directement à cet email pour contacter {nom}.
-    </p>
+    <p style="color:#475569;font-size:12px;margin-top:16px">Répondez à cet email pour contacter {nom} directement.</p>
   </div>
 </body></html>"""
-        text_body = (
-            f"Nom     : {nom}\n"
-            f"Email   : {email}\n"
-            + (f"Tél.    : {telephone}\n" if telephone else "")
-            + f"\nMessage :\n{message}\n"
-        )
-        msg = Message(
-            subject=f"[La Relève] Nouveau message de {nom}",
-            recipients=[MAIL_RECIPIENT],
-            reply_to=email,
-            body=text_body,
-            html=html_body,
-        )
-        mail.send(msg)
-        app.logger.info(f'Email envoyé depuis {email} → {MAIL_RECIPIENT}.')
+        resend.Emails.send({
+            "from":     MAIL_FROM,
+            "to":       [MAIL_RECIPIENT],
+            "reply_to": email,
+            "subject":  f"[La Relève] Nouveau message de {nom}",
+            "html":     html_body,
+            "text":     f"Nom: {nom}\nEmail: {email}\n" + (f"Tél: {telephone}\n" if telephone else "") + f"\nMessage:\n{message}",
+        })
+        app.logger.info(f'Email Resend envoyé → {MAIL_RECIPIENT}.')
         return True
     except Exception as e:
-        app.logger.error(f'Échec envoi email : {e}')
+        app.logger.error(f'Échec envoi Resend : {e}')
         return False
-    finally:
-        socket.setdefaulttimeout(old_timeout)
 
 # ──────────────────────────────────────────────
 # ADMIN AUTH
@@ -509,24 +487,18 @@ def admin_supprimer(id):
 @app.route('/admin/test-email')
 @admin_required
 def admin_test_email():
-    """Route de diagnostic : envoie un email de test à MAIL_RECIPIENT."""
-    username = app.config.get('MAIL_USERNAME')
-    password = app.config.get('MAIL_PASSWORD')
-    if not username or not password:
-        return jsonify({'ok': False, 'detail': 'MAIL_USERNAME ou MAIL_PASSWORD non configuré dans les variables d\'environnement.'})
+    """Route de diagnostic : envoie un email de test via Resend."""
+    if not RESEND_API_KEY:
+        return jsonify({'ok': False, 'detail': 'RESEND_API_KEY non configuré dans les variables d\'environnement Render.'})
     try:
-        msg = Message(
-            subject="[La Relève] ✅ Test email — configuration OK",
-            recipients=[MAIL_RECIPIENT],
-            body=(
-                f"Ceci est un email de test envoyé depuis La Relève.\n\n"
-                f"Expéditeur : {username}\n"
-                f"Destinataire : {MAIL_RECIPIENT}\n\n"
-                "Si vous recevez cet email, la configuration Gmail fonctionne correctement."
-            ),
-        )
-        mail.send(msg)
-        return jsonify({'ok': True, 'detail': f'Email de test envoyé à {MAIL_RECIPIENT}.'})
+        resend.api_key = RESEND_API_KEY
+        resend.Emails.send({
+            "from":    MAIL_FROM,
+            "to":      [MAIL_RECIPIENT],
+            "subject": "[La Relève] Test Resend — configuration OK",
+            "text":    f"Configuration Resend fonctionnelle.\nDestinataire : {MAIL_RECIPIENT}",
+        })
+        return jsonify({'ok': True, 'detail': f'Email de test envoyé à {MAIL_RECIPIENT} via Resend.'})
     except Exception as e:
         return jsonify({'ok': False, 'detail': str(e)})
 
