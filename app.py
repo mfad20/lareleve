@@ -1,4 +1,5 @@
 import os
+import threading
 from functools import wraps, lru_cache
 from flask import Flask, render_template, request, jsonify, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
@@ -294,7 +295,12 @@ VALEURS = [
 MAIL_RECIPIENT = os.environ.get('MAIL_RECIPIENT', 'mfad09012002@gmail.com')
 
 def _send_contact_email(nom, email, telephone, message):
-    """Envoie une notification email à l'admin. Retourne True si succès, False sinon."""
+    """Envoie une notification email à l'admin (appelé depuis un thread daemon)."""
+    with app.app_context():
+        return _send_contact_email_inner(nom, email, telephone, message)
+
+def _send_contact_email_inner(nom, email, telephone, message):
+    """Logique d'envoi — doit être appelé avec un app_context actif."""
     username = app.config.get('MAIL_USERNAME')
     password = app.config.get('MAIL_PASSWORD')
     if not username or not password:
@@ -429,8 +435,12 @@ def contact():
             db.session.add(nouveau_contact)
             db.session.commit()
 
-            # Send email notification if mail is configured
-            _send_contact_email(nom, email, telephone, message)
+            # Email en arrière-plan — ne bloque pas la réponse HTTP
+            threading.Thread(
+                target=_send_contact_email,
+                args=(nom, email, telephone, message),
+                daemon=True,
+            ).start()
 
             if request.is_json:
                 return jsonify({

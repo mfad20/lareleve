@@ -249,7 +249,7 @@ form.addEventListener('submit', async (e) => {
     };
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 20000);
+    const timeout = setTimeout(() => controller.abort(), 45000);
 
     const res = await fetch('/contact', {
       method: 'POST',
