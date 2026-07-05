@@ -16,11 +16,12 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 86400  # 24h cache navigateur
 
 # ── Flask-Mail (Gmail SMTP) ──────────────────────────────
-app.config['MAIL_SERVER']   = 'smtp.gmail.com'
-app.config['MAIL_PORT']     = 587
-app.config['MAIL_USE_TLS']  = True
-app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME')
-app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_SERVER']         = 'smtp.gmail.com'
+app.config['MAIL_PORT']           = 587
+app.config['MAIL_USE_TLS']        = True
+app.config['MAIL_USERNAME']       = os.environ.get('MAIL_USERNAME')
+app.config['MAIL_PASSWORD']       = os.environ.get('MAIL_PASSWORD')
+app.config['MAIL_DEFAULT_SENDER'] = os.environ.get('MAIL_USERNAME')
 
 db   = SQLAlchemy(app)
 mail = Mail(app)
@@ -283,13 +284,15 @@ VALEURS = [
 MAIL_RECIPIENT = os.environ.get('MAIL_RECIPIENT', 'mfad09012002@gmail.com')
 
 def _send_contact_email(nom, email, telephone, message):
-    if not app.config.get('MAIL_USERNAME') or not app.config.get('MAIL_PASSWORD'):
+    username = app.config.get('MAIL_USERNAME')
+    password = app.config.get('MAIL_PASSWORD')
+    if not username or not password:
+        app.logger.warning('Email non envoyé : MAIL_USERNAME ou MAIL_PASSWORD manquant.')
         return
     try:
         tel_line = f"Téléphone : {telephone}\n" if telephone else ""
         msg = Message(
             subject=f"[La Relève] Nouveau message de {nom}",
-            sender=app.config['MAIL_USERNAME'],
             recipients=[MAIL_RECIPIENT],
             reply_to=email,
             body=(
@@ -300,8 +303,9 @@ def _send_contact_email(nom, email, telephone, message):
             )
         )
         mail.send(msg)
-    except Exception:
-        pass  # ne bloque pas la sauvegarde si l'email échoue
+        app.logger.info(f'Email envoyé depuis {email}.')
+    except Exception as e:
+        app.logger.error(f'Échec envoi email : {e}')
 
 # ──────────────────────────────────────────────
 # ADMIN AUTH
