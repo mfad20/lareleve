@@ -142,20 +142,36 @@
       </div>
     </div>
 
-    <!-- SECRÉTARIAT & TRÉSORERIE — GROUP PHOTOS -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-bottom:3rem;" data-aos="fade-up">
-      <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(59,130,246,0.15);aspect-ratio:4/3;">
-        <img src="{{ url_for('static', filename='images/equipe_secretaire.jpg') }}" alt="Secrétariat" style="width:100%;height:100%;object-fit:cover;object-position:top;" />
-      </div>
-      
-      <span class="mf-badge" style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:#3B82F6;">SECRÉTARIAT</span>
-        
-      <div style="border-radius:20px;overflow:hidden;border:1px solid rgba(212,175,55,0.15);aspect-ratio:4/3;">
-        <img src="{{ url_for('static', filename='images/equipe_tresorerie.jpg') }}" alt="Trésorerie" style="width:100%;height:100%;object-fit:cover;object-position:top;" />
-      </div>
-      <span class="mf-badge" style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:#3B82F6;">TRÉSORERIE</span>
+<!-- SECRÉTARIAT & TRÉSORERIE — GROUP PHOTOS -->
+<div class="group-photos" data-aos="fade-up">
 
+    <!-- Secrétariat -->
+    <div class="group-card">
+        <div class="group-image">
+            <img src="{{ url_for('static', filename='images/equipe_secretaire.jpg') }}"
+                 alt="Secrétariat">
+        </div>
+
+        <span class="mf-badge"
+              style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:#3B82F6;">
+            SECRÉTARIAT
+        </span>
     </div>
+
+    <!-- Trésorerie -->
+    <div class="group-card">
+        <div class="group-image">
+            <img src="{{ url_for('static', filename='images/equipe_tresorerie.jpg') }}"
+                 alt="Trésorerie">
+        </div>
+
+        <span class="mf-badge"
+              style="background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.3);color:#3B82F6;">
+            TRÉSORERIE
+        </span>
+    </div>
+
+</div>
 
     <!-- 4 AUTRES MEMBRES EN GRILLE -->
     <div class="membres-grid">

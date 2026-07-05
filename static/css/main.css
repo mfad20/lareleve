@@ -3044,3 +3044,40 @@ body.menu-open { overflow: hidden; }
 .burger-btn.open .burger-line:nth-child(1) { transform: translateY(8px) rotate(45deg); }
 .burger-btn.open .burger-line:nth-child(2) { opacity: 0; transform: scaleX(0); }
 .burger-btn.open .burger-line:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+.group-photos{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1.5rem;
+    margin-bottom:3rem;
+}
+
+.group-card{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.group-image{
+    width:100%;
+    border-radius:20px;
+    overflow:hidden;
+    border:1px solid rgba(59,130,246,0.15);
+    aspect-ratio:4/3;
+}
+
+.group-image img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    object-position:top;
+}
+
+.group-card .mf-badge{
+    margin-top:12px;
+}
+
+@media (max-width:768px){
+    .group-photos{
+        grid-template-columns:1fr;
+    }
+}
