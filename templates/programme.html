@@ -160,27 +160,4 @@
 {% endblock %}
 
 {% block extra_js %}
-<script>
-// Tab system
-document.querySelectorAll('.prog-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    const target = tab.dataset.tab;
-
-    document.querySelectorAll('.prog-tab').forEach(t => {
-      t.classList.remove('active');
-      t.setAttribute('aria-selected', 'false');
-    });
-    document.querySelectorAll('.prog-panel').forEach(p => p.classList.remove('active'));
-
-    tab.classList.add('active');
-    tab.setAttribute('aria-selected', 'true');
-
-    const panel = document.getElementById('tab-' + target);
-    panel.classList.add('active');
-
-    // Re-trigger AOS for newly visible elements
-    AOS.refresh();
-  });
-});
-</script>
 {% endblock %}

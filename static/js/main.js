@@ -371,7 +371,7 @@ function initScrollTrigger() {
 
     tabs.forEach((t)   => t.classList.toggle('active', t === btn));
     panels.forEach((p) => {
-      const active = p.id === target || p.dataset.panel === target;
+      const active = p.id === target || p.id === ('tab-' + target) || p.dataset.panel === target;
       p.classList.toggle('active', active);
       p.setAttribute('aria-hidden', !active);
     });
