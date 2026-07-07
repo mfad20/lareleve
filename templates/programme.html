@@ -33,7 +33,7 @@
       <button class="prog-tab active" role="tab" aria-selected="true" aria-controls="tab-traditionnel" data-tab="traditionnel">
         <span><i data-lucide="landmark"></i></span> Activités Traditionnelles
       </button>
-      <button class="prog-tab" role="tab" aria-selected="false" aria-controls="tab-restructuration" data-tab="restructuration">
+      <button class="prog-tab" role="tab" aria-selected="false" aria-controls="tab-restitution" data-tab="restitution">
         <span><i data-lucide="refresh-cw"></i></span> Restructuration
       </button>
       <button class="prog-tab" role="tab" aria-selected="false" aria-controls="tab-innovations" data-tab="innovations">
@@ -64,13 +64,13 @@
     </div>
 
     <!-- TAB: RESTRUCTURATION -->
-    <div id="tab-restructuration" class="prog-panel" role="tabpanel" data-aos="fade-up">
+    <div id="tab-restitution" class="prog-panel" role="tabpanel" data-aos="fade-up">
       <div class="prog-panel-header">
         <h2>Restructuration de <span class="electric">l'existant</span></h2>
         <p>Nous ne voulons pas seulement répéter ce qui a été fait. Nous voulons y apporter notre touche avec des améliorations concrètes et mesurables.</p>
       </div>
       <div class="prog-cards-grid">
-        {% for act in programme.restructuration %}
+        {% for act in programme.restitution %}
         <div class="prog-card prog-card--new" data-aos="fade-up" data-aos-delay="{{ loop.index * 60 }}">
           <div class="prog-card-icon"><i data-lucide="{{ act.icone }}"></i></div>
           <div class="prog-card-num">0{{ loop.index }}</div>

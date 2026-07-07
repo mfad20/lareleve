@@ -194,12 +194,10 @@ PROGRAMME = {
         {"titre": "Marathon des ISE", "icone": "activity", "description": "Événement sportif symbolisant l'endurance et la persévérance des ISE."},
         {"titre": "Vente de Gadgets", "icone": "shirt", "description": "Polos, tee-shirts, casquettes et vêtements aux couleurs de la Céleste Division."}
     ],
-    "restructuration": [
+    "restitution": [
         {"titre": "Cartes de Félicitation", "icone": "gift", "description": "Envoi de cartes aux nouveaux lauréats bien avant le bootcamp, pour un accueil chaleureux dès la réussite."},
         {"titre": "Boutique de l'Expert", "icone": "shopping-bag", "description": "Retour de la boutique institutionnelle avec une gamme élargie de produits DISE."},
         {"titre": "Activités Détente", "icone": "gamepad-2", "description": "Moments de cohésion et de bien-être pour équilibrer l'exigence académique."},
-        {"titre": "Simulation d'Entretien", "icone": "target", "description": "Préparation intensive aux entretiens d'embauche avec des professionnels RH."},
-        {"titre": "Formation Recherche d'Emploi", "icone": "bar-chart-2", "description": "Ateliers pratiques sur les techniques modernes de recherche d'emploi."}
     ],
     "innovations": [
         {
